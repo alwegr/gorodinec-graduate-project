@@ -20,7 +20,7 @@ app.use('/api/authorization', authorizationRoute)
 async function start() {
     try{
         await mongoose.connect(
-            'mongodb://localhost:27017/documents',
+            'mongodb://localhost:27017/Document',
         )
         app.listen(PORT, () => console.log(`server start: ${PORT}`))
     }catch(error){
