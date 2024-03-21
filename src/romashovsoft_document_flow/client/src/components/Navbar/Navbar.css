@@ -1,0 +1,6 @@
+aside{
+    position: fixed;
+    height: 100vh;
+    width: 250px;
+    border: 1px solid black;
+}

@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ul,
+li{
+    list-style: none;
+}
+li,
+a {
+    cursor: pointer;
+}
+a{
+    text-decoration: none;
+}
+/* aside{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    border: 1px solid black;
+} */
+.main{
+    grid-area: main;
+}
+.aside{
+    grid-area: aside;
+}
+.wrapper{
+    grid-template-columns: repeat(9, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    grid-template-areas: 
+    "aside main main"
+    "aside main main"
+    "aside main main";
+}
