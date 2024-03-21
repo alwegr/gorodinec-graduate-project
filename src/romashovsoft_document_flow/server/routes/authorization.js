@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { register, authorization, profile } from '../controllers/authorization.js'
+import  { checkAuthorization } from '../utils/checkAuthorization.js'
 
 const router = new Router()
 
@@ -10,6 +11,6 @@ router.post('/register', register)
 router.post('/authorization', authorization)
 
 //Профиль
-router.get('/profile', profile)
+router.get('/profile', checkAuthorization, profile)
 
 export default router

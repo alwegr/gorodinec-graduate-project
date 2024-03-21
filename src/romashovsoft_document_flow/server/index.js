@@ -8,11 +8,17 @@ const app = express()
 dotenv.config()
 
 //Constants
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT 
 
 //Middleware
 app.use(cors())
 app.use(express.json())
+
+// app.use(
+//     Fingerprint({
+//         parameter: [Fingerprint.useragent, Fingerprint.acceptHeaders],
+//     })
+// )
 
 //Routes 
 app.use('/api/authorization', authorizationRoute)
