@@ -1,0 +1,41 @@
+.pade{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wrapper{
+    border: 1px solid black;
+    width: 470px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+form{
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+}
+h2{
+    margin: 20px 0 40px 0;
+}
+.employee_input
+input[type=text]{
+    width: 100%;
+    margin: 6px 0 14px 0;
+}
+
+.form_buttons{
+    display: flex;
+    justify-content: space-around;  
+    margin-top: 20px;
+}
+.form_btn {
+    padding: 12px 20px;
+    border: 1px solid var(--border-components);
+    border-radius: 6px;
+    background: var(--white);
+}
+.add{
+    background: var(--accent);
+    color: var(--white);
+}

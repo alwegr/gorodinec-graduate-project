@@ -1,0 +1,90 @@
+.container_sidebar {
+    display: flex;
+}
+
+main {
+    width: 100%;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 300px;
+    transition: all 0.3s;
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+}
+
+.top_section {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+}
+
+.logo {
+    font-size: 18px;
+    color: black;
+}
+
+.burger_menu {
+    display: flex;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.link {
+    display: flex;
+    color: black;
+    padding: 10px 15px;
+    font-size: 16px;
+    gap: 15px;
+    transition: all 0.5s;
+}
+
+.sublink {
+    display: inline-block;
+    color: black;
+    padding: 10px 15px;
+    width: 227px;
+    transition: all 0.5s;
+    padding-left: 22px;
+}
+.link_text{
+    white-space: nowrap;
+}
+
+.subSublink {
+    display: flex;
+    color: black;
+    padding: 10px 15px;
+    gap: 15px;
+    transition: all 0.5s;
+    padding-left: 40px;
+    border-left: 1px solid var(--accent);
+}
+
+.subnav {
+    padding-left: 23px;
+}
+.subArrow {
+    margin-left: 160px;
+    font-size: 20px;
+    margin-top: -18px;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.arrow {
+    margin-left: 13px;
+    font-size: 20px;
+}
+/* .sublink_text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+.icon{
+    font-size: 20px;
+}
