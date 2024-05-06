@@ -1,0 +1,7 @@
+.add_document{
+    padding: 12px 20px;
+    border-radius: 3px;
+    background: var(--accent);
+    border: none;
+    color: var(--white);
+}

@@ -1,46 +1,78 @@
+section{
+    margin: 15px;
+}
 .container_navigate{
     display: flex;
+    padding: 12px 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-/* .search
+.search
 input[type=text] {
-
-} */
+    width: 296px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--white);
+}
 .add_user{
     padding: 12px 20px;
-    border: 1px solid var(--border-components);
-    border-radius: 6px;
-    background: var(--white);
+    border-radius: 3px;
+    background: var(--accent);
+    border: none;
+    color: var(--white);
 }
 table {
     width: 100%;
     border-collapse: collapse;
+    position: relative;
 }
 th {
     text-align: left;
-    background: var(--table);
-    color: var(--table-header-text);
-    border-bottom: 1px solid var(--border-components);
+    background: var(--accent);
+    color: var(--white);
     font-size: 16px;
     font-style: normal;
-    font-weight: 600;
-    line-height: 24px;
+    font-weight: 400;
+    line-height: 125%; 
 }
 th,
 td {
     padding: 12px 8px;
 }
-.icon_update,
-.icon_delete{
-    font-size: 20px;
-    color: black;
-}
-
 tr:nth-of-type(2n){
     background: var(--table-even);
 }
 
+.popup{
+    width: 221px;
+    position: absolute;
+    right: 0;
+    background: var(--white);
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* .popup::after{
+    content: ''; 
+    position: absolute; 
+    top: -12px;
+    right: 30px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid green;
+} */
+.button_delete, .button_edit p{
+    padding: 12px;
+    color: var(--border);
 
+}
+.button_delete:hover{
+    background: rgba(25, 111, 173, 0.05);
+}
+.button_edit:hover{
+    background: rgba(25, 111, 173, 0.05);
+}
 
 @media screen and (max-width: 1183px) {
     table {

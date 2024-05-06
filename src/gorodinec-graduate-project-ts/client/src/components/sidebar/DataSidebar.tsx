@@ -14,45 +14,5 @@ export const sidebarItems = [
         title: 'Сотрудники',
         icon: <GoPeople />
     },
-    // {
-    //     path: '/setting',
-    //     title: 'Панель упарвления',
-    //     icon: <IoSettingsOutline />
-    // }
-    // {
-    //     path: '#',
-    //     title: 'Панель упраления',
-    //     icon:  <IoSettingsOutline />,
-    //     arrow: <IoMdArrowDropright />,
-    //     listItems: [
-    //         {
-    //             title: 'Сотрудники',
-    //             path: '#',
-    //             arrow: <IoMdArrowDropright />,
-    //             sectionList: [
-    //                 {
-    //                     title: 'Статус сотрудников',
-    //                     path: '/employeeStatus', 
-    //                 },
-    //                 {
-    //                     title: 'Должность',
-    //                     path: '/position', 
-    //                 },
-    //                 {
-    //                     title: 'Подразделения',
-    //                     path: '/divisions', 
-    //                 }
-    //             ]
-    //         }
-    //         {
-    //             title: 'Документы',
-    //             arrow: <MdKeyboardArrowDown />,
-    //             sectionList: [
-    //                 {
-    //                     title: 
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // }
+   
 ]

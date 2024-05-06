@@ -7,6 +7,7 @@ router.get("/get/employees", (req, res) => {
   EmployeesModel.find()
     .populate("position")
     .populate("divisions")
+    .populate("employeeStatus")
     .then((employees) => res.json(employees))
     .catch((err) => res.json(err));
 });
@@ -16,6 +17,7 @@ router.get("/get/employees/:id", (req, res) => {
   EmployeesModel.findById({ _id: id })
     .populate("position")
     .populate("divisions")
+    .populate("employeeStatus")
     .then((post) => res.json(post))
     .catch((err) => console.log(err));
 });
@@ -30,7 +32,8 @@ router.post("/create/employees", (req, res) => {
     personnelNumber,
     position,
     divisions,
-  } = req.body; //убрала  подразделение статус
+    employeeStatus,
+  } = req.body;
   const newProject = new EmployeesModel({
     lastName,
     firstName,
@@ -39,7 +42,7 @@ router.post("/create/employees", (req, res) => {
     personnelNumber,
     position,
     divisions,
-    // employeeStatus
+    employeeStatus,
   });
   newProject
     .save()
@@ -74,6 +77,3 @@ router.delete("/delete/employees/:id", (req, res) => {
 });
 
 module.exports = router;
-
-
-

@@ -1,58 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-// import { AiOutlineDelete } from "react-icons/ai";
-// import { FiEdit2 } from "react-icons/fi";
-import { Link } from 'react-router-dom';
-import './Employees_style.css'
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { HiEllipsisHorizontal } from "react-icons/hi2";
+import { Link } from "react-router-dom";
+import "./Employees_style.css";
 
 interface Employee {
-  _id: string,
-  lastName: string,
-  firstName: string,
-  middleName: string,
+  _id: string;
+  lastName: string;
+  firstName: string;
+  middleName: string;
   gender: string;
-  personnelNumber: number,
+  personnelNumber: number;
   position: {
     title: string;
   };
   divisions: {
-    title: string
-  },
-  // employeeStatus: {
-  //   title: string;
-  // };
+    title: string;
+  };
+  employeeStatus: {
+    title: string;
+  };
 }
-
 
 function EmployeesPage() {
   const [dataEmployee, setDataEmployee] = useState<Employee[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   // const [filter, setFilter] = useState<string>("");
   const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
-
+  const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/get/employees')
+      .get("http://localhost:3001/get/employees")
       .then((res) => {
         setDataEmployee(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
-  
 
-
-  // const handleDelete = (id: string) => {
-  //   axios
-  //     .delete(`http://localhost:3001/delete/employees/${id}`)
-  //     .then((res) => {
-  //       console.log(res);
-  //       // Обновляем данные после удаления сотрудника
-  //       setDataEmployee(dataEmployee.filter((employee) => employee._id !== id));
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+  // удаление
+  const handleDelete = (id: string) => {
+    axios
+      .delete(`http://localhost:3001/delete/employees/${id}`)
+      .then((res) => {
+        console.log(res);
+        // Обновляем данные после удаления сотрудника
+        setDataEmployee(dataEmployee.filter((employee) => employee._id !== id));
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     // Функция для фильтрации сотрудников по выбранной должности и поиску по имени, фамилии и отчеству
@@ -64,9 +60,8 @@ function EmployeesPage() {
       //   filteredData = filteredData.filter((employee) => employee.position && employee.position.title === filter);
       // }
 
-
       // // Поиск по имени, фамилии и отчеству
-      if (searchQuery !== '') {
+      if (searchQuery !== "") {
         filteredData = filteredData.filter((employee) => {
           const fullName = `${employee.lastName} ${employee.firstName} ${employee.middleName}`;
           return fullName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -78,69 +73,121 @@ function EmployeesPage() {
     filterEmployees();
   }, [dataEmployee, searchQuery]);
 
- console.log( typeof filteredEmployees);
+  // модальное окно для таблицы
+  const togglePopover = (id: string) => {
+    setOpenPopoverId(openPopoverId === id ? null : id);
+  };
+
+  // функция для закрытие togglePopover вне элемента
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (!event.target.closest(".HiEllipsisHorizontal"))
+        setOpenPopoverId(null);
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
-      <div className={'container_navigate'}>
+      <section>
+        <div className={"container_navigate"}>
+          <div className={"search"}>
+            <input
+              type="text"
+              name="search"
+              placeholder="Поиск.."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
 
-        <div className={'search'}>
-          <input
-            type="text"
-            name="search"
-            placeholder="Поиск.."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} />
+          <div className={"filter"}></div>
+
+          <div className={"btn_add_users"}>
+            <Link to="/employees/createEmployee">
+              <button className={"add_user"}>Добавить</button>
+            </Link>
+          </div>
         </div>
 
-        <div className={'filter'}>
-
-        </div>
-
-        <div className={'btn_add_users'}>
-          <Link to="/employees/createEmployee">
-            <button className={'add_user'}>Добавить</button>
-          </Link>
-        </div>
-
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>№</th>
-            <th>Фамилия</th>
-            <th>Имя</th>
-            <th>Отчество</th>
-            <th>Табельный номер</th>
-            <th>Должность</th>
-            <th>Подразделение</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEmployees.map((employee, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{employee.lastName}</td>
-              <td>{employee.firstName}</td>
-              <td>{employee.middleName}</td>
-              <td>{employee.personnelNumber}</td>
-              <td>{employee.position ? employee.position.title : "Нет данных"}</td>
-              <td>{employee.divisions ? employee.divisions.title : "Нет данных"}</td>
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Табельный номер</th>
+              <th>Должность</th>
+              <th>Подразделение</th>
+              <th>Статус</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredEmployees.map((employee, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{employee.lastName}</td>
+                <td>{employee.firstName}</td>
+                <td>{employee.middleName}</td>
+                <td>{employee.personnelNumber}</td>
+                <td>
+                  {employee.position ? employee.position.title : "Нет данных"}
+                </td>
+                <td>
+                  {employee.divisions ? employee.divisions.title : "Нет данных"}
+                </td>
+                <td>
+                  {employee.employeeStatus
+                    ? employee.employeeStatus.title
+                    : "Нет данных"}
+                </td>
+                <td>
+                  <HiEllipsisHorizontal
+                    className="HiEllipsisHorizontal"
+                    onClick={() => togglePopover(employee._id)}
+                  />
+                  {openPopoverId === employee._id && (
+                    <div className="popup">
+                      <div className="popup_content">
+                        <div
+                          onClick={() => handleDelete(employee._id)}
+                          className="button_delete"
+                        >
+                          <p>Удалить</p>
+                        </div>
+                        <div className="button_edit">
+                          <Link
+                            to={`/employees/updateEmployees/${employee._id}`}
+                          >
+                            <p>Редактировать</p>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
-  )
+  );
 }
-export default EmployeesPage
+export default EmployeesPage;
 
-
-{/* <button onClick={() => setPopupIsOpen(true)}>
+{
+  /* <button onClick={() => setPopupIsOpen(true)}>
           Создать сотрудника
-        </button> */}
-{/* 
+        </button> */
+}
+{
+  /* 
         <Popup isOpen={popupIsOpen} onClose={() => setPopupIsOpen(false)}>
           <h2>Создание сотрудника</h2>
           <form onSubmit={handleSubmitPosition}>
@@ -209,4 +256,5 @@ export default EmployeesPage
             </div>
 
           </form>
-        </Popup> */}
+        </Popup> */
+}

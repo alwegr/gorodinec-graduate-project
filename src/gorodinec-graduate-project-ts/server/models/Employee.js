@@ -8,15 +8,15 @@ const EmployeesSchema = new mongoose.Schema({
   personnelNumber: Number,
   position: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "position",
+    ref: "Position",
   },
-  // employeeStatus: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "employee_status",
-  // },
+  employeeStatus: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "EmployeeStatus",
+  },
   divisions: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "divisions",
+    ref: "Divisions",
   },
 });
 
