@@ -1,0 +1,30 @@
+.tab_container{
+    width: min(100% - 25px, 1560px);
+    margin: 0 auto;
+}
+.menu{
+    width: 100%;
+    border-bottom: 1px solid var(--accent);
+}
+.menu ul{
+    /* max-width: 1540px; */
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+
+}
+.menu li{
+    width: 390px;
+    padding: 16px 24px;
+    /* background: var(--accent); */
+    text-align: center;
+}
+.menu li a{
+    color: #293244;
+}
+
+.menu li:hover{
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 6px 6px 0px 0px;
+}

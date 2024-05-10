@@ -2,11 +2,16 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Sidebar from './components/sidebar/Sidebar';
-import MainPage from './pages/main/MainPage';
 import DocumentsPage from './pages/documents/documentsPage/DocumentsPage';
-import CreateDocumentsPage from './pages/documents/createDocumentsPage/CreateDocumentsPage';
-import CreateEmployees from './pages/employees/createEmployeesPage/CreateEmployeesPage';
 import EmployeesPage from './pages/employees/employeesPage/EmployeesPage';
+
+import ServiceNotePage from './pages/documents/serviceNotePage/ServiceNotePage';
+import EmploymentСontract from './pages/documents/employmentСontractPage/EmploymentСontractPage';
+import Contract from './pages/documents/contractPage/ContractPage';
+import UploadingFile from './pages/documents/uploadingFilePage/UploadingFilePage';
+import UpdateEmployees from './components/employees/updateEmployees/UpdateEmployeesPage';
+
+
 
 
 
@@ -16,11 +21,16 @@ function App() {
       <BrowserRouter>
         <Sidebar>
           <Routes>
-            <Route path='/' element={<MainPage/>}/>
+            {/* Документы */}
             <Route path='/documents' element={<DocumentsPage/>}/>
-            <Route path='/documents/createDocument' element={<CreateDocumentsPage/>}/>
+            <Route path='/documents/createDocument/contract' element={<Contract/>}/>
+            <Route path='/documents/createDocument/serviceNote' element={<ServiceNotePage/>}/>
+            <Route path='/documents/createDocument/employmentСontract' element={<EmploymentСontract/>}/>
+            <Route path='/documents/createDocument/file' element={<UploadingFile/>}/>
+
+            {/* Сотрудники */}
             <Route path='/employees' element={<EmployeesPage/>}/>
-            <Route path='/employees/createEmployee' element={<CreateEmployees/>}/>
+            <Route path='/employees/updateEmployee/:id' element={<UpdateEmployees/>}/>
           </Routes>
         </Sidebar>
       </BrowserRouter>

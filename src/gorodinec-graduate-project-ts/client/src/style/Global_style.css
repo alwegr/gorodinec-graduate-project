@@ -1,0 +1,124 @@
+section{
+    margin: 15px;
+}
+
+
+/* HEADER */
+.header_link{
+    font-size: 20px;
+    font-style: normal;
+    line-height: 24px;
+    color: var(--white);
+}
+.header_documents, .header_employees{
+    width: 100%;
+    height: 56px;
+    padding: 6px 20px;
+    background: var(--header);
+}
+.arrow_documents, .arrow_employees{
+    font-size: 24px;
+}
+.header_content{
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    color: var(--white);
+}
+.header_content p{
+    font-size: 20px;
+    font-style: normal;
+    line-height: 24px; /* 120% */
+}
+
+
+/* ПОИСК ФИЛЬТР  */
+.container_navigate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.container_search_filter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+.search
+input[type=text] {
+    width: 296px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--white);
+}
+.filter{
+    width: 295px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    outline: none;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0) inset;
+}
+
+
+/* ТАБЛИЦЫ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    position: relative;
+}
+th {
+    text-align: left;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; 
+}
+th,
+td {
+    padding: 12px 8px;
+}
+tr:nth-of-type(2n){
+    background: var(--table-even);
+}
+
+@media screen and (max-width: 1183px) {
+    table {
+        border: 0;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tr {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 2px solid #ddd;
+    }
+
+    table td {
+        display: block;
+        text-align: center;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
+        border-right: 1px solid transparent;
+    }
+
+    table td:last-child {
+        border-bottom: 0;
+    }
+
+    table td:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+}

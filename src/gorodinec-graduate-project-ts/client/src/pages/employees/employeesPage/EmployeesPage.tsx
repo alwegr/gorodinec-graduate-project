@@ -1,37 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { Employee } from "../EmployeeIterface"
 import axios from "axios";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
-import { Link } from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
+import CreateEmployees from "../../../components/employees/createEmployees/CreateEmployees";
+import UpdateEmployees from "../../../components/employees/updateEmployees/UpdateEmployeesPage";
+import "../../../style/Global_style.css";
 import "./Employees_style.css";
 
-interface Employee {
-  _id: string;
-  lastName: string;
-  firstName: string;
-  middleName: string;
-  gender: string;
-  personnelNumber: number;
-  position: {
-    title: string;
-  };
-  divisions: {
-    title: string;
-  };
-  employeeStatus: {
-    title: string;
-  };
-}
 
-function EmployeesPage() {
+const URL = process.env.REACT_APP_URL;
+
+function Employees() {
+
   const [dataEmployee, setDataEmployee] = useState<Employee[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>("");
   const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
   const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>(""); // Добавляем состояние для модального окна
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/get/employees")
+      .get(`${URL}/get/employees`)
       .then((res) => {
         setDataEmployee(res.data);
       })
@@ -40,25 +33,28 @@ function EmployeesPage() {
 
   // удаление
   const handleDelete = (id: string) => {
-    axios
-      .delete(`http://localhost:3001/delete/employees/${id}`)
+    if (window.confirm(`Вы действительно хотите удалить?`)){
+      axios
+      .delete(`${URL}/delete/employees/${id}`)
       .then((res) => {
         console.log(res);
         // Обновляем данные после удаления сотрудника
         setDataEmployee(dataEmployee.filter((employee) => employee._id !== id));
       })
       .catch((err) => console.log(err));
+    }
   };
 
   useEffect(() => {
-    // Функция для фильтрации сотрудников по выбранной должности и поиску по имени, фамилии и отчеству
     const filterEmployees = () => {
       let filteredData = dataEmployee;
 
       // Фильтрация по должности
-      // if (filter !== '') {
-      //   filteredData = filteredData.filter((employee) => employee.position && employee.position.title === filter);
-      // }
+      if (filter !== "") {
+        filteredData = filteredData.filter(
+          (employee) => employee.position && employee.position.title === filter
+        );
+      }
 
       // // Поиск по имени, фамилии и отчеству
       if (searchQuery !== "") {
@@ -71,7 +67,7 @@ function EmployeesPage() {
     };
 
     filterEmployees();
-  }, [dataEmployee, searchQuery]);
+  }, [dataEmployee, filter, searchQuery]);
 
   // модальное окно для таблицы
   const togglePopover = (id: string) => {
@@ -90,26 +86,60 @@ function EmployeesPage() {
     };
   }, []);
 
+  // модальное окно добавить сотрудника
+  const handleAddEmployee = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // модальное окно редактировать сотрудника
+  const handleUpdateEmployee = (id: string) => {
+    setSelectedEmployeeId(id);
+    setIsModalUpdateOpen(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setIsModalUpdateOpen(false);
+  };
+
   return (
     <>
+      <div className={"header_employees"}>
+        <div className={"header_content"}>
+          <IoIosArrowBack className={"arrow_employees"}/>
+          <p>Сотрудники</p>
+        </div>
+      </div>
       <section>
         <div className={"container_navigate"}>
-          <div className={"search"}>
-            <input
-              type="text"
-              name="search"
-              placeholder="Поиск.."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <div className={"container_search_filter"}>
+            <div className={"search"}>
+              <input
+                type="text"
+                name="search"
+                placeholder="Поиск.."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className={"container_filter"}>
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className={"filter"}
+              >
+                <option value="">Все</option>
+                <option value="Программист">Программист</option>
+                <option value="Дизайнер">Дизайнер</option>
+              </select>
+            </div>
           </div>
 
-          <div className={"filter"}></div>
-
-          <div className={"btn_add_users"}>
-            <Link to="/employees/createEmployee">
+          <div className={"btn_add_users"} onClick={handleAddEmployee}>
               <button className={"add_user"}>Добавить</button>
-            </Link>
           </div>
         </div>
 
@@ -155,17 +185,13 @@ function EmployeesPage() {
                     <div className="popup">
                       <div className="popup_content">
                         <div
-                          onClick={() => handleDelete(employee._id)}
-                          className="button_delete"
-                        >
+                          onClick={() =>  handleDelete(employee._id) }
+                          className="button_delete">
                           <p>Удалить</p>
                         </div>
-                        <div className="button_edit">
-                          <Link
-                            to={`/employees/updateEmployees/${employee._id}`}
-                          >
-                            <p>Редактировать</p>
-                          </Link>
+                        <div className="button_edit"
+                          onClick={() => handleUpdateEmployee(employee._id)}>
+                          <p>Редактировать</p>
                         </div>
                       </div>
                     </div>
@@ -176,85 +202,10 @@ function EmployeesPage() {
           </tbody>
         </table>
       </section>
+      {/* Добавляем модальное окно */}
+      <CreateEmployees isOpen={isModalOpen} onClose={handleCloseModal} />
+      <UpdateEmployees isOpen={isModalUpdateOpen} onClose={handleCloseUpdateModal} employeeId={selectedEmployeeId} />
     </>
   );
 }
-export default EmployeesPage;
-
-{
-  /* <button onClick={() => setPopupIsOpen(true)}>
-          Создать сотрудника
-        </button> */
-}
-{
-  /* 
-        <Popup isOpen={popupIsOpen} onClose={() => setPopupIsOpen(false)}>
-          <h2>Создание сотрудника</h2>
-          <form onSubmit={handleSubmitPosition}>
-            <label htmlFor="lastName">Фамилия</label>
-            <div>
-              <input
-                type="text"
-                placeholder="Иванов"
-                className={'form_control'}
-                onChange={(e: any) => setLastName(e.target.value)}
-                value={lastName}
-                required
-              />
-            </div>
-
-            <label htmlFor="firstName">Имя</label>
-            <div>
-              <input
-                type="text"
-                placeholder="Иван"
-                className={'form_control'}
-                onChange={(e: any) => setFirstName(e.target.value)}
-                value={firstName}
-                required
-              />
-            </div>
-
-            <label htmlFor="middleName">Отчество</label>
-            <div>
-              <input
-                type="text"
-                placeholder="Иванович"
-                className={'form_control'}
-                onChange={(e: any) => setMiddleName(e.target.value)}
-                value={middleName}
-                required
-              />
-            </div>
-            <label htmlFor="status">Статус</label>
-
-            <div>
-              <input
-                type="radio"
-                name="status"
-                onChange={(e) => setIsActive(e.target.value === 'false')}
-                value={isActive.toString()}
-                required
-              />
-              <label htmlFor="isActive">Активный</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="status"
-                required
-                onChange={(e) => setIsActive(e.target.value === 'true')}
-                value={isActive.toString()}
-              />
-              <label htmlFor="isActive">Неактивный</label>
-            </div>
-
-
-            <div className={'action_buttons'}>
-              <button className={'btn_add_cancel'}>Отменить</button>
-              <button className={'btn_add_cancel'}>Добавить</button>
-            </div>
-
-          </form>
-        </Popup> */
-}
+export default Employees;

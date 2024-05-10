@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Select from 'react-select'
+import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { style } from "../../ui/select";
 import "./CreateEmployees_style.css";
+const URL = process.env.REACT_APP_URL;
 
-function CreateEmployees() {
+function CreateEmployees({ isOpen, onClose }: any) {
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
@@ -16,16 +18,16 @@ function CreateEmployees() {
   const [dataDivisions, setDataDivisions] = useState<any[]>([]);
   const [employeeStatus, setEmployeeStatus] = useState("");
   const [dataEmployeeStatus, setDataEmployeeStatus] = useState<any[]>([]);
-  const navigate = useNavigate();
-  const [value, setValue] = useState("");
+  // const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
 
-  function chengeValue(event: any) {
-    setGender(event.target.value);
-  }
+
+  // function chengeValue(event: any) {
+  //   setGender(event.target.value);
+  // }
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/get/position")
+      .get(`${URL}/get/position`)
       .then((res) => {
         setDataPosition(res.data);
       })
@@ -34,7 +36,7 @@ function CreateEmployees() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/get/divisions")
+      .get(`${URL}/get/divisions`)
       .then((res) => {
         setDataDivisions(res.data);
       })
@@ -43,7 +45,7 @@ function CreateEmployees() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/get/employeeStatus")
+      .get(`${URL}/get/employeeStatus`)
       .then((res) => {
         setDataEmployeeStatus(res.data);
       })
@@ -53,7 +55,7 @@ function CreateEmployees() {
   const handleSubmitPosition = async (event: any) => {
     event.preventDefault();
     axios
-      .post("http://localhost:3001/create/employees", {
+      .post(`${URL}/create/employees`, {
         lastName,
         firstName,
         middleName,
@@ -65,10 +67,12 @@ function CreateEmployees() {
       })
       .then((res) => {
         console.log(res);
-        navigate("/employees");
+        window.location.reload();
+        onClose();
       })
       .catch((error) => console.log(error));
   };
+
 
   const handlePositionChange = (selectedOption: any) => {
     if (selectedOption) {
@@ -81,22 +85,31 @@ function CreateEmployees() {
     }
   };
 
-  const style = {
-    control: (base : any ) => ({
-      ...base,
-      border: 0,
-      boxShadow: 'none'
-    })
-  };
+  // const togglePopover = (id: string) => {
+  //   setOpenPopoverId(isOpen === id ? null : id);
+  // };
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event: any) => {
+  //     if (!event.target.closest(".wrapper"))
+  //       setOpenPopoverId(null);
+  //   };
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
+  // onClick={() => togglePopover}
 
   return (
     <>
-      <div className={"pade"}>
+      {isOpen && ( 
+        <div className={"pade"}>
         <div className={"wrapper"}>
           <form onSubmit={handleSubmitPosition}>
             <h2>Добавление сотрудника</h2>
             <h3>Личная информация</h3>
-            <div className={"employee_input"}>
+            <div className={"personal_information"}>
               <label htmlFor="lastName">Фамилия</label>
               <div>
                 <input
@@ -109,7 +122,7 @@ function CreateEmployees() {
                 />
               </div>
             </div>
-            <div className={"employee_input"}>
+            <div className={"personal_information"}>
               <label htmlFor="firstName">Имя</label>
               <div>
                 <input
@@ -123,7 +136,7 @@ function CreateEmployees() {
               </div>
             </div>
 
-            <div className={"employee_input"}>
+            <div className={"personal_information"}>
               <label htmlFor="middleName">Отчество</label>
               <div>
                 <input
@@ -136,28 +149,26 @@ function CreateEmployees() {
                 />
               </div>
             </div>
-            <div className={"employee_input"}>
-              <label htmlFor="gender">
-                Пол
-              </label>
+            <div className={"personal_information"}>
+              <label htmlFor="gender">Пол</label>
               <div className={"gender_radio"}>
                 <label>
                   <input
                     type="radio"
-                    name="radio"
+                    name="gender"
                     value="Женский"
-                    checked={value == "Женский" ? true : false}
-                    onChange={(e: any) => setValue(e.target.value)}
+                    checked={gender == "Женский" ? true : false}
+                    onChange={(e: any) => setGender(e.target.value)}
                   />
                   Женский
                 </label>
                 <label>
                   <input
                     type="radio"
-                    name="radio"
+                    name="gender"
                     value="Мужской"
-                    checked={value == "Мужской" ? true : false}
-                    onChange={(e: any) => setValue(e.target.value)}
+                    checked={gender == "Мужской" ? true : false}
+                    onChange={(e: any) => setGender(e.target.value)}
                   />
                   Мужской
                 </label>
@@ -166,19 +177,19 @@ function CreateEmployees() {
             <hr className={"dividing_line"} />
             <h3>Рабочая информация</h3>
             <div className={"input_div"}>
-              <label htmlFor="serviceNumber">Табельный номер</label>
-              <div>
+              <label htmlFor="personnelNumber">Табельный номер</label>
                 <input
+                  id="personnelNumber"
                   type="number"
                   placeholder="Введите табельный номер"
                   onChange={(e: any) => setPersonnelNumber(e.target.value)}
                   value={personnelNumber}
                   required
                 />
-              </div>
             </div>
             <div className={"input_div"}>
-                <label htmlFor="position">Должность</label>
+              <label htmlFor="position">Должность</label>
+              <div className="select_position">
                 <Select
                   options={dataPosition.map((position) => ({
                     value: position._id,
@@ -189,12 +200,14 @@ function CreateEmployees() {
                   isClearable
                   isSearchable
                   required
-                  placeholder={'Выберите должность'}
+                  placeholder={"Выберите должность"}
                 />
+              </div>
             </div>
             <div className={"input_div"}>
-              <label htmlFor="position">Подразделение</label>
-              <Select
+              <label htmlFor="divisions">Подразделение</label>
+              <div className="select_divisions">
+                <Select
                   options={dataDivisions.map((divisions) => ({
                     value: divisions._id,
                     label: divisions.title,
@@ -204,36 +217,40 @@ function CreateEmployees() {
                   isClearable
                   isSearchable
                   required
-                  placeholder={'Выберите подразделение'}
+                  placeholder={"Выберите подразделение"}
                 />
+              </div>
             </div>
-                <div className={"input_div"}>
-                  <label>Статус</label>
-                  <div className={"status_radio"}>
-                    {dataEmployeeStatus.map((status) => (
-                      <label key={status._id}>
-                        <input
-                          type="radio"
-                          name="employeeStatus"
-                          value={status._id}
-                          checked={employeeStatus === status._id}
-                          onChange={() => setEmployeeStatus(status._id)}
-                        />
-                        {status.title}
-                      </label>
-                    ))}
-                  </div>
-                </div>
+            <div className={"input_div"}>
+              <label>Статус</label>
+              <div className={"status_radio"}>
+                {dataEmployeeStatus.map((status) => (
+                  <label key={status._id}>
+                    <input
+                      type="radio"
+                      name="employeeStatus"
+                      value={status._id}
+                      checked={employeeStatus === status._id}
+                      onChange={() => setEmployeeStatus(status._id)}
+                    />
+                    {status.title}
+                  </label>
+                ))}
+              </div>
+            </div>
             <div className={"form_buttons"}>
               <Link to={"/employees"}>
-                <button className={"form_btn cancel"}>Отменить</button>
+                <button className={"form_btn cancel"} onClick={onClose}>Отменить</button>
               </Link>
               <button className={"form_btn add"}>Добавить</button>
             </div>
           </form>
         </div>
       </div>
+
+      )}
     </>
   );
 }
 export default CreateEmployees;
+

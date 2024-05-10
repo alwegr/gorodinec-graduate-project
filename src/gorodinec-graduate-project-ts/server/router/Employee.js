@@ -59,8 +59,11 @@ router.put("/update/employees/:id", (req, res) => {
       lastName: req.body.lastName,
       firstName: req.body.firstName,
       middleName: req.body.middleName,
+      gender: req.body.gender,
+      personnelNumber: req.body.personnelNumber,
       position: req.body.position,
-      isActive: req.body.isActive,
+      divisions: req.body.divisions,
+      employeeStatus: req.body.employeeStatus,
     },
     { new: true }
   )

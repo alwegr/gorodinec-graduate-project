@@ -1,14 +1,21 @@
 .pade{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .wrapper{
     width: 600px;
     box-shadow: 0px 32px 32px 0px rgba(68, 83, 113, 0.05),
     0px 0px 32px 0px rgba(68, 83, 113, 0.1);
     border-radius: 12px;
+    background: var(--white);
 }
 form{
     width: 100%;
@@ -23,7 +30,8 @@ h3{
     margin: 8px 0 20px 0;
     font-size: 18px;
 }
-.employee_input
+
+.personal_information
 input[type=text],
 input[type=number]{
     width: 100%;
@@ -33,11 +41,11 @@ input[type=number]{
 .gender_radio,
 .status_radio{
     display: flex;
-    gap: 12px;
+    gap: 20px;
     margin: 8px 0 16px 0;
 }
 input[type=radio]{
-    margin: 0px 5px 0 0;
+    margin: 0px 7px 0 0;
     accent-color: var(--accent);
     -ms-transform: scale(1.5); /* IE 9 */
     -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
@@ -50,25 +58,11 @@ input[type=radio]{
     opacity: 0.33;
     margin: 8px 0 8px 0;
 }
-/* .form_control{
-    width: 100%;
-    padding: 12px;
-    border-radius: 6px;
-    outline:none;
-    border: 1px solid var(--border);
-    margin: 8px 0 12px 0;
-} */
 
-/* .form_control option:hover{
-    background-color: #9BA4B4;
-} */
-/* .select_division,
-.select_position{
-    font-size: 16px;
-    border: 1px solid var(--border);
-    outline: none;
-    boxShadow: none
-}    */
+.select_position, .select_divisions{
+    margin: 8px 0 12px 0;
+    font-size: 14px;
+}
 
 .form_buttons{
     display: flex;

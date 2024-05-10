@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Divisions = require("../models/Divisions");
+const ServiceNote = require("../models/ServiceNote");
 
 // Получение должности
-router.get("/get/divisions", (req, res) => {
-    Divisions.find()
-    .then((divisions) => res.json(divisions))
+router.get("/get/serviceNote", (req, res) => {
+    ServiceNote.find()
+    .then((serviceNote) => res.json(serviceNote))
     .catch((err) => res.json(err));
 });
 
