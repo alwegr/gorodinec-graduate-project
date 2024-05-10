@@ -104,7 +104,7 @@ function UpdateEmployees({ isOpen, onClose, employeeId }: any) {
   return (
     <>
       {isOpen && (
-        <div className={"pade"}>
+        <div className={"page_popup"}>
           <div className={"wrapper"}>
             <form onSubmit={handleUpdate}>
               <h2>Редактирование сотрудника</h2>

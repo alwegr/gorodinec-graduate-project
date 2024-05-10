@@ -6,7 +6,7 @@ import Select from "react-select";
 import { style } from "../../../components/ui/select";
 import { IoIosArrowBack } from "react-icons/io";
 import "../../../style/Global_style.css";
-
+import "./ServiceNote_style.css"
 
 const URL = process.env.REACT_APP_URL;
 
@@ -59,72 +59,74 @@ function ServiceNote() {
       </div>
       <section>
         <TabCreateDocuments />
-        <div>
-          <form>
-            <div>
-              <label>ФИО</label>
-              <div className="select_position">
-                <Select
-                  options={dataEmployee.map((employee) => ({
-                    value: employee._id,
-                    label: `${employee.lastName} ${employee.firstName} ${employee.middleName}`,
-                  }))}
-                  onChange={handleEmployeeChange}
-                  styles={style}
-                  isClearable
-                  isSearchable
-                  required
-                  placeholder={"Выберите себя"}
-                />
-              </div>
-            </div>
-            <div>
-              <label>Кому</label>
-              <div className="select_position">
-                <Select
-                  options={dataEmployee.map((employee) => ({
-                    value: employee._id,
-                    label: `${employee.lastName} ${employee.firstName} ${employee.middleName}`,
-                  }))}
-                  onChange={handleEmployeeChange}
-                  styles={style}
-                  isClearable
-                  isSearchable
-                  required
-                  placeholder={"Кому адресована"}
-                />
-              </div>
-            </div>
-            <div>
-              <label>Вид служебной записки</label>
-              <div className="select_position">
-                <Select
-                  options={dataTypeOfServiceNote.map((typeOfServiceNote) => ({
-                    value: typeOfServiceNote._id,
-                    label: typeOfServiceNote.title,
-                  }))}
-                  onChange={handleTypeOfServiceNoteChange}
-                  styles={style}
-                  isClearable
-                  isSearchable
-                  required
-                  placeholder={"Выберите вид"}
-                />
-              </div>
-            </div>
-            <div>
-              <label>Содержание</label>
+        <div className={"page_serviceNote"}>
+          <div className={"wrapper_serviceNote"}>
+            <form>
               <div>
-                <textarea placeholder="Содержание, что Вас беспокоит" />
+                <label>ФИО</label>
+                <div className="select_position">
+                  <Select
+                    options={dataEmployee.map((employee) => ({
+                      value: employee._id,
+                      label: `${employee.lastName} ${employee.firstName} ${employee.middleName}`,
+                    }))}
+                    onChange={handleEmployeeChange}
+                    styles={style}
+                    isClearable
+                    isSearchable
+                    required
+                    placeholder={"Выберите себя"}
+                  />
+                </div>
               </div>
-            </div>
-            <div className={"form_buttons"}>
-              <Link to={"/documents"}>
-                <button className={"form_btn cancel"}>Отменить</button>
-              </Link>
-              <button className={"form_btn add"}>Добавить</button>
-            </div>
-          </form>
+              <div>
+                <label>Кому</label>
+                <div className="select_position">
+                  <Select
+                    options={dataEmployee.map((employee) => ({
+                      value: employee._id,
+                      label: `${employee.lastName} ${employee.firstName} ${employee.middleName}`,
+                    }))}
+                    onChange={handleEmployeeChange}
+                    styles={style}
+                    isClearable
+                    isSearchable
+                    required
+                    placeholder={"Кому адресована"}
+                  />
+                </div>
+              </div>
+              <div>
+                <label>Вид служебной записки</label>
+                <div className="select_position">
+                  <Select
+                    options={dataTypeOfServiceNote.map((typeOfServiceNote) => ({
+                      value: typeOfServiceNote._id,
+                      label: typeOfServiceNote.title,
+                    }))}
+                    onChange={handleTypeOfServiceNoteChange}
+                    styles={style}
+                    isClearable
+                    isSearchable
+                    required
+                    placeholder={"Выберите вид"}
+                  />
+                </div>
+              </div>
+              <div>
+                <label>Содержание</label>
+                <div>
+                  <textarea placeholder="Содержание, что Вас беспокоит" />
+                </div>
+              </div>
+              <div className={"form_buttons"}>
+                <Link to={"/documents"}>
+                  <button className={"form_btn cancel"}>Отменить</button>
+                </Link>
+                <button className={"form_btn add"}>Добавить</button>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </>

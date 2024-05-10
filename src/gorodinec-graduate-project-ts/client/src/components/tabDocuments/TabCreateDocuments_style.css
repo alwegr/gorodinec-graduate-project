@@ -15,16 +15,18 @@
 }
 .menu li{
     width: 390px;
-    padding: 16px 24px;
     /* background: var(--accent); */
     text-align: center;
 }
 .menu li a{
     color: #293244;
+    display: block;
+    padding: 16px 24px;
 }
 
-.menu li:hover{
-  background: var(--accent);
-  color: var(--white);
-  border-radius: 6px 6px 0px 0px;
-}
+.menu li.active a{
+    background: var(--accent);
+    color: var(--white);
+    border-radius: 6px 6px 0px 0px;
+  }
+  
