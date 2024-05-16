@@ -18,12 +18,12 @@ function TabCreateDocuments() {
           <ul>
             <li
               className={
-                activeMenu === `/documents/createDocument/employmentСontract`
+                activeMenu === `/documents/createDocument/employmentContract`
                   ? "active"
                   : ""
               }
             >
-              <Link to={`/documents/createDocument/employmentСontract`}>
+              <Link to={`/documents/createDocument/employmentContract`}>
                 Трудовой договор
               </Link>
             </li>

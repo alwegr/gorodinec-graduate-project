@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const EmployeeStatusSchema = new mongoose.Schema(
     {
         title: String,
-
     }
 )
 

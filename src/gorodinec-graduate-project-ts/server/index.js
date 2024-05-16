@@ -8,6 +8,8 @@ const divisions = require("./router/Divisions");
 const employeeStatus = require("./router/EmployeeStatus");
 const document = require("./router/Document");
 const serviceNote = require("./router/ServiceNote")
+const viewServiceNote = require("./router/ViewServiceNote")
+const currency = require("./router/Currency")
 
 const app = express();
 dotenv.config()
@@ -28,7 +30,8 @@ app.use("/", position);
 app.use("/", employeeStatus);
 app.use("/", document);
 app.use("/", serviceNote)
-
+app.use("/", viewServiceNote)
+app.use("/", currency)
 
 app.listen(`${PORT}`, () => {
   console.log("Сервер запущен");

@@ -25,7 +25,7 @@ function App() {
             <Route path='/documents' element={<DocumentsPage/>}/>
             <Route path='/documents/createDocument/contract' element={<Contract/>}/>
             <Route path='/documents/createDocument/serviceNote' element={<ServiceNotePage/>}/>
-            <Route path='/documents/createDocument/employmentСontract' element={<EmploymentСontract/>}/>
+            <Route path='/documents/createDocument/employmentContract' element={<EmploymentСontract/>}/>
             <Route path='/documents/createDocument/file' element={<UploadingFile/>}/>
 
             {/* Сотрудники */}

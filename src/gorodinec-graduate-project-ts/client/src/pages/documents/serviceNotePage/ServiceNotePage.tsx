@@ -11,38 +11,74 @@ import "./ServiceNote_style.css"
 const URL = process.env.REACT_APP_URL;
 
 function ServiceNote() {
-  const [employee, setEmployee] = useState("");
-  const [dataEmployee, setDataEmployee] = useState<any[]>([]);
-  const [typeOfServiceNote, setTypeOfServiceNote] = useState("");
-  const [dataTypeOfServiceNote, setDataTypeOfServiceNote] = useState<any[]>([]);
+  const [creator, setCreator] = useState("");
+  const [dataCreator, setDataCreator] = useState<any[]>([]);
+  const [addresser, setAddresser] = useState("");
+  const [dataAddresser, setDataAddresser] = useState<any[]>([]);
+  const [viewServiceNote, setViewServiceNote] = useState("");
+  const [dataViewServiceNote, setDataViewServiceNote] = useState<any[]>([]);
+  const [content, setContent] = useState("");
+
 
   useEffect(() => {
     axios
       .get(`${URL}/get/employees`)
       .then((res) => {
-        setDataEmployee(res.data);
+        setDataCreator(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
     axios
-      .get(`${URL}/get/serviceNote`)
+      .get(`${URL}/get/employees`)
       .then((res) => {
-        setDataTypeOfServiceNote(res.data);
+        setDataAddresser(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const handleEmployeeChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setEmployee(selectedOption.value);
-    }
+  useEffect(() => {
+    axios
+      .get(`${URL}/get/viewServiceNote`)
+      .then((res) => {
+        setDataViewServiceNote(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleSubmitServiceNote = async (event: any) => {
+    event.preventDefault();
+    axios
+      .post(`${URL}/create/serviceNote`, {
+        creator,
+        addresser,
+        viewServiceNote,
+        content,
+      })
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((error) => console.log(error));
   };
 
-  const handleTypeOfServiceNoteChange = (selectedOption: any) => {
+  // Создатель
+  const handleCreatorChange = (selectedOption: any) => {
     if (selectedOption) {
-      setTypeOfServiceNote(selectedOption.value);
+      setCreator(selectedOption.value);
+    }
+  };
+  // Кому
+  const handleAddresserChange = (selectedOption: any) => {
+    if (selectedOption) {
+      setAddresser(selectedOption.value);
+    }
+  };
+  // Вид служебной записки
+  const handleTypeServiceNoteChange = (selectedOption: any) => {
+    if (selectedOption) {
+      setViewServiceNote(selectedOption.value);
     }
   };
 
@@ -61,16 +97,16 @@ function ServiceNote() {
         <TabCreateDocuments />
         <div className={"page_serviceNote"}>
           <div className={"wrapper_serviceNote"}>
-            <form>
+            <form onSubmit={handleSubmitServiceNote}>
               <div>
                 <label>ФИО</label>
                 <div className="select_position">
                   <Select
-                    options={dataEmployee.map((employee) => ({
-                      value: employee._id,
-                      label: `${employee.lastName} ${employee.firstName} ${employee.middleName}`,
+                    options={dataCreator.map((creator) => ({
+                      value: creator._id,
+                      label: `${creator.lastName} ${creator.firstName} ${creator.middleName}`,
                     }))}
-                    onChange={handleEmployeeChange}
+                    onChange={handleCreatorChange}
                     styles={style}
                     isClearable
                     isSearchable
@@ -83,11 +119,11 @@ function ServiceNote() {
                 <label>Кому</label>
                 <div className="select_position">
                   <Select
-                    options={dataEmployee.map((employee) => ({
-                      value: employee._id,
-                      label: `${employee.lastName} ${employee.firstName} ${employee.middleName}`,
+                    options={dataAddresser.map((addresser) => ({
+                      value: addresser._id,
+                      label: `${addresser.lastName} ${addresser.firstName} ${addresser.middleName}`,
                     }))}
-                    onChange={handleEmployeeChange}
+                    onChange={handleAddresserChange}
                     styles={style}
                     isClearable
                     isSearchable
@@ -100,11 +136,11 @@ function ServiceNote() {
                 <label>Вид служебной записки</label>
                 <div className="select_position">
                   <Select
-                    options={dataTypeOfServiceNote.map((typeOfServiceNote) => ({
-                      value: typeOfServiceNote._id,
-                      label: typeOfServiceNote.title,
+                    options={dataViewServiceNote.map((viewServiceNote) => ({
+                      value: viewServiceNote._id,
+                      label: viewServiceNote.title,
                     }))}
-                    onChange={handleTypeOfServiceNoteChange}
+                    onChange={handleTypeServiceNoteChange}
                     styles={style}
                     isClearable
                     isSearchable
@@ -114,9 +150,14 @@ function ServiceNote() {
                 </div>
               </div>
               <div>
-                <label>Содержание</label>
+                <label htmlFor="content">Содержание</label>
                 <div>
-                  <textarea placeholder="Содержание, что Вас беспокоит" />
+                  <textarea 
+                    id="content"
+                    onChange={(e: any) => setContent(e.target.value)}
+                    value={content}
+                    required
+                    placeholder="Содержание, что Вас беспокоит" />
                 </div>
               </div>
               <div className={"form_buttons"}>

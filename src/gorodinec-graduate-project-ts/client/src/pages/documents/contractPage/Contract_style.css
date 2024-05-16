@@ -1,0 +1,10 @@
+.container_colum{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.container_colum_item{
+    width: 680px;
+    padding: 0 80px 0 20px;
+}

@@ -29,14 +29,8 @@ h3{
     margin: 8px 0 20px 0;
     font-size: 18px;
 }
-.personal_information
-input[type=text],
-input[type=number]{
-    width: 100%;
-    margin: 8px 0 12px 0;
-    border: 1px solid var(--border);
-    font-size: 14px;
-}
+
+
 .gender_radio,
 .status_radio{
     display: flex;

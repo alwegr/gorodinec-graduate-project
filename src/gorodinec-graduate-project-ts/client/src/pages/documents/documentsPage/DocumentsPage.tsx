@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Document } from "../DocumentInterface"
 import { IoIosArrowBack } from "react-icons/io";
+import { HiEllipsisHorizontal } from "react-icons/hi2";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Document_style.css";
@@ -10,6 +11,7 @@ const URL = process.env.REACT_APP_URL;
 
 function DocumentsPage() {
   const [dataDocument, setDataDocument] = useState<Document[]>([]);
+  const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
   const [filteredDocument, setFilteredDocumet] = useState<Document[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
@@ -22,6 +24,20 @@ function DocumentsPage() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+    // удаление
+    const handleDelete = (id: string) => {
+      if (window.confirm(`Вы действительно хотите удалить?`)){
+        axios
+        .delete(`${URL}/delete/employees/${id}`)
+        .then((res) => {
+          console.log(res);
+          // Обновляем данные после удаления сотрудника
+          setDataDocument(dataDocument.filter((document) => document._id !== id));
+        })
+        .catch((err) => console.log(err));
+      }
+    };
 
   useEffect(() => {
     const filterDocument = () => {
@@ -46,6 +62,23 @@ function DocumentsPage() {
 
     filterDocument();
   }, [dataDocument, filter, searchQuery]);
+
+    // модальное окно для таблицы
+    const togglePopover = (id: string) => {
+      setOpenPopoverId(openPopoverId === id ? null : id);
+    };
+  
+    // функция для закрытие togglePopover вне элемента
+    useEffect(() => {
+      const handleClickOutside = (event: any) => {
+        if (!event.target.closest(".HiEllipsisHorizontal"))
+          setOpenPopoverId(null);
+      };
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, []);
 
   return (
     <>
@@ -106,6 +139,27 @@ function DocumentsPage() {
                   {document.creator.lastName}
                   {document.creator.firstName.charAt(0)}
                   {document.creator.middleName.charAt(0)}
+                </td>
+                <td>
+                  <HiEllipsisHorizontal
+                    className="HiEllipsisHorizontal"
+                    onClick={() => togglePopover(document._id)}
+                  />
+                  {openPopoverId === document._id && (
+                    <div className="popup">
+                      <div className="popup_content">
+                        <div
+                          onClick={() =>  handleDelete(document._id) }
+                          className="button_delete">
+                          <p>Удалить</p>
+                        </div>
+                        {/* <div className="button_edit"
+                          onClick={() => handleUpdateEmployee(document._id)}>
+                          <p>Редактировать</p>
+                        </div> */}
+                      </div>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const PositionSchema = new mongoose.Schema(
     {
         title: String,
-
     }
 )
 
