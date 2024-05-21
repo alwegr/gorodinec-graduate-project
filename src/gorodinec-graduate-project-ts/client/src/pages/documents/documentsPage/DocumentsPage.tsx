@@ -135,11 +135,11 @@ function DocumentsPage() {
                 <td>{index + 1}</td>
                 <td>{document.name}</td>
                 <td>{document.date}</td>
-                <td>
+                {/* <td>
                   {document.creator.lastName}
                   {document.creator.firstName.charAt(0)}
                   {document.creator.middleName.charAt(0)}
-                </td>
+                </td> */}
                 <td>
                   <HiEllipsisHorizontal
                     className="HiEllipsisHorizontal"

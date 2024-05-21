@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Employee } from "../EmployeeIterface"
+import { Employee } from "./EmployeeIterface"
 import axios from "axios";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { IoIosArrowBack } from "react-icons/io";
-import CreateEmployees from "../../../components/employees/createEmployees/CreateEmployees";
-import UpdateEmployees from "../../../components/employees/updateEmployees/UpdateEmployeesPage";
-import "../../../style/Global_style.css";
+import CreateEmployees from "../../components/employees/createEmployees/CreateEmployees";
+import UpdateEmployees from "../../components/employees/updateEmployees/UpdateEmployeesPage";
+import "../../style/Global_style.css";
 import "./Employees_style.css";
 
 

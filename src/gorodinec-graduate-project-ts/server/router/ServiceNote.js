@@ -23,6 +23,7 @@ router.get("/get/serviceNote/:id", (req, res) => {
 router.post("/create/serviceNote", (req, res) => {
   const { creator, addresser, viewServiceNote, content } = req.body;
   const newProject = new ServiceNoteModel({
+    nameServiceNote:'Служебная записка',
     creator,
     addresser,
     viewServiceNote,
@@ -34,7 +35,7 @@ router.post("/create/serviceNote", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-// Изменение сотрудников
+// Изменение 
 router.put("/update/serviceNote/:id", (req, res) => {
   const id = req.params.id;
   ServiceNoteModel.findByIdAndUpdate(

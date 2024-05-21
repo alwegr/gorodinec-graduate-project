@@ -11,6 +11,7 @@ const serviceNote = require("./router/ServiceNote")
 const viewServiceNote = require("./router/ViewServiceNote")
 const currency = require("./router/Currency")
 
+
 const app = express();
 dotenv.config()
 app.use(cors());
@@ -24,14 +25,24 @@ mongoose
   .then((db) => console.log("База данных подключена"))
   .catch((error) => console.log(error));
 
+// сотрудники
 app.use("/", employee);
 app.use("/", divisions);
 app.use("/", position);
 app.use("/", employeeStatus);
+
+// документы
 app.use("/", document);
+
+// служебная записка
 app.use("/", serviceNote)
 app.use("/", viewServiceNote)
+
+// договор
 app.use("/", currency)
+
+// трудовой договор
+
 
 app.listen(`${PORT}`, () => {
   console.log("Сервер запущен");

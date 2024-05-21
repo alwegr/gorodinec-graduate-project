@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { style } from "../../ui/select";
 import "./CreateEmployees_style.css";
+
 const URL = process.env.REACT_APP_URL;
 
 function CreateEmployees({ isOpen, onClose }: any) {
@@ -77,6 +78,7 @@ function CreateEmployees({ isOpen, onClose }: any) {
       setPosition(selectedOption.value);
     }
   };
+
   const handlesetDivisionsChange = (selectedOption: any) => {
     if (selectedOption) {
       setDivisions(selectedOption.value);

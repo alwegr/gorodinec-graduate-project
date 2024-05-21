@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const ServiceNoteSchema = new mongoose.Schema({
+  nameServiceNote:{
+    type: String,
+    enum: ["Служебная записка"]
+  },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employees",
@@ -9,7 +13,7 @@ const ServiceNoteSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employees",
   },
-  ViewServiceNote: {
+  viewServiceNote: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ViewServiceNote",
   },

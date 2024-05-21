@@ -4,15 +4,13 @@ const DocumentsSchema = new mongoose.Schema({
   name: String,
   numberDocument: Number,
   date: Date,
-  creator: {
+  serviceNote: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Employees",
+    ref: "ServiceNote",
   },
-  viewDocument: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "ViewDocuments",
-  }
+
 });
 
 const DocumentsModel = mongoose.model("Documents", DocumentsSchema);
 module.exports = DocumentsModel;
+
