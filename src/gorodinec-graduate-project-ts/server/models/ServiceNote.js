@@ -18,6 +18,7 @@ const ServiceNoteSchema = new mongoose.Schema({
     ref: "ViewServiceNote",
   },
   content: String,
+
 });
 
 const ServiceNoteModal = mongoose.model("ServiceNote", ServiceNoteSchema);

@@ -1,29 +1,55 @@
+// export interface Document {
+//   _id: string;
+//   name: string;
+//   numberDocument: string;
+//   date: string;
+//   serviceNote: ServiceNote
+// }
+
+// export interface ServiceNote{
+//   _id: string,
+//   nameServiceNote: string,
+//   creator: {
+//     _id: string;
+//     lastName: string;
+//     firstName: string;
+//     middleName: string;
+//   },
+//   addresser: {
+//     _id: string;
+//     lastName: string;
+//     firstName: string;
+//     middleName: string;
+//   }, 
+//   viewServiceNote: {
+//     _id: string;
+//     title: string;
+//   },
+//   content: string
+// }
+
 export interface Document {
   _id: string;
-  name: string;
   numberDocument: string;
   date: string;
-  serviceNote: ServiceNote
+  serviceNote: ServiceNote;
 }
 
-export interface ServiceNote{
-  _id: string,
-  nameServiceNote: string,
-  creator: {
-    _id: string;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-  },
-  addresser: {
-    _id: string;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-  }, 
+export interface ServiceNote {
+  _id: string;
+  nameServiceNote: string;
+  creator: Employee,
+  addresser: Employee, 
   viewServiceNote: {
     _id: string;
     title: string;
-  },
-  content: string
+  };
+  content: string;
+}
+
+export interface Employee {
+  _id: string;
+  lastName: string;
+  firstName: string;
+  middleName: string;
 }

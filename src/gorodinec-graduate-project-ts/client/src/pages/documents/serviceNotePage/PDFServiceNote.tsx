@@ -11,7 +11,7 @@ function PDFServiceNote({ serviceNoteId }: any) {
 
   useEffect(() => {
     axios
-      .get(`${URL}/get/serviceNote/${id}`)
+      .get(`http://localhost:3001/get/serviceNote/${id}`)
       .then((res) => {
         setDataServiceNote(res.data);
       })
@@ -26,32 +26,40 @@ function PDFServiceNote({ serviceNoteId }: any) {
   });
   return (
     <>
-        <div ref={component} style={{ position: "relative", padding: "35px" }}>
-          <div
-            style={{
-              position: "absolute",
-              width: "200px",
-              top: "0px",
-              right: "35px",
-            }}
-          >
-            <p style={{}}>
-              Индивидуальному предпринимателю
-            </p>
-          </div>
-          <div style={{ marginTop: "40px" }}>
-            <h2 style={{ textAlign: "center" }}>Служебная записка</h2>
-            <p style={{ textAlign: "justify", textIndent: "20px" }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
+      <div ref={component} style={{ position: "relative", margin: "35px" }}>
+        {dataServiceNote.map((serviceNote) => {
+          return (
+            <>
+              <div key={serviceNote._id}>
+                <p>{serviceNote.creator.lastName}</p>
+              </div>
+            </>
+          );
+        })}
+        <div
+          style={{
+            position: "absolute",
+            width: "200px",
+            top: "0px",
+            right: "35px",
+            marginBottom: '40px'
+          }}
+        >
+        <p style={{}}>Индивидуальному предпринимателю </p>
         </div>
+        <div style={{ marginTop: "40px" }}>
+          <h2 style={{ textAlign: "center" }}>Служебная записка</h2>
+          <p style={{ textAlign: "justify", textIndent: "20px" }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+        </div>
+      </div>
       <button onClick={handlePrint}>Print</button>
     </>
   );
