@@ -19,3 +19,15 @@ textarea{
     border: 1px solid var(--border);
     font-size: 14px;
 }
+.container_btn_print{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 35px;
+}
+.print{
+    padding: 12px 20px;
+    border-radius: 3px;
+    background: var(--accent);
+    border: none;
+    color: var(--white);
+}

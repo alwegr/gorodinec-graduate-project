@@ -28,7 +28,7 @@ function App() {
             <Route path='/documents/createDocument/serviceNote' element={<ServiceNotePage/>}/>
             <Route path='/documents/createDocument/employmentContract' element={<EmploymentСontract/>}/>
             <Route path='/documents/createDocument/file' element={<UploadingFile/>}/>
-            <Route path='/documents/createDocument/serviceNote/pdf' element={<PDFServiceNote/>}/>
+            <Route path='/documents/createDocument/serviceNote/pdf/:id' element={<PDFServiceNote/>}/>
 
             {/* Сотрудники */}
             <Route path='/employees' element={<EmployeesPage/>}/>

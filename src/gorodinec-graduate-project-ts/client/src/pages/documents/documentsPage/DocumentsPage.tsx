@@ -43,29 +43,29 @@ function DocumentsPage() {
     }
   };
 
-  // useEffect(() => {
-  //   const filterDocument = () => {
-  //     let filteredData = dataServiceNote;
+  useEffect(() => {
+    const filterDocument = () => {
+      let filteredData = dataServiceNote;
 
   // Фильтрация по имени документа
   // if (filter !== "") {
   //   filteredData = filteredData.filter(
-  //     (document) => document.name && document.name === filter
+  //     (serviceNote) => serviceNote.name && serviceNote.name === filter
   //   );
   // }
 
-  // // Поиск по имени, фамилии и отчеству
-  //     if (searchQuery !== "") {
-  //       filteredData = filteredData.filter((document) => {
-  //         const fullName = `${document.name}`;
-  //         return fullName.toLowerCase().includes(searchQuery.toLowerCase());
-  //       });
-  //     }
-  //     setFilteredServiceNote(filteredData);
-  //   };
+  // Поиск по имени, фамилии и отчеству
+      if (searchQuery !== "") {
+        filteredData = filteredData.filter((serviceNote) => {
+          const fullName = `${serviceNote.creator.lastName} ${serviceNote.creator.firstName} ${serviceNote.creator.middleName}`;
+          return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+      }
+      setFilteredServiceNote(filteredData);
+    };
 
-  //   filterDocument();
-  // }, [dataDocument, filter, searchQuery]);
+    filterDocument();
+  }, [dataServiceNote, filter, searchQuery]);
 
   // модальное окно для таблицы
   const togglePopover = (id: string) => {
@@ -128,16 +128,18 @@ function DocumentsPage() {
             <tr>
               <th>№</th>
               <th>Наименование</th>
-              <th>Дата</th>
+              <th>Вид</th>
               <th>Создатель</th>
+              <th>Адресат</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {dataServiceNote.map((serviceNote, index) => (
+            {filteredServiceNote.map((serviceNote, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{serviceNote.nameServiceNote}</td>
+                <td>{serviceNote.viewServiceNote.title}</td>
                 <td>
                   {serviceNote.creator.lastName}
                   {serviceNote.creator.firstName.charAt(0)}.
@@ -172,7 +174,7 @@ function DocumentsPage() {
                         >
                           <p>Удалить</p>
                         </div>
-                        <Link to={"/documents/createDocument/serviceNote/pdf"}>
+                        <Link to={`/documents/createDocument/serviceNote/pdf/${serviceNote._id}`}>
                           <p>Подробнее</p>
                         </Link>
                         {/* <div className="button_edit"

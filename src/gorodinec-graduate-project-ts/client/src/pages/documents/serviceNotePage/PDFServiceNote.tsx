@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { ServiceNote } from "../DocumentInterface";
+import "./ServiceNote_style.css";
 
 const URL = process.env.REACT_APP_URL;
 
 function PDFServiceNote({ serviceNoteId }: any) {
-  const id = serviceNoteId;
-  const [dataServiceNote, setDataServiceNote] = useState<ServiceNote[]>([]);
+  const { id } = useParams<{ id: string }>();
+  const [dataServiceNote, setDataServiceNote] = useState<ServiceNote | null>(
+    null
+  );
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/get/serviceNote/${id}`)
+      .get(`${URL}/get/serviceNote/${id}`)
       .then((res) => {
         setDataServiceNote(res.data);
       })
@@ -22,45 +26,35 @@ function PDFServiceNote({ serviceNoteId }: any) {
 
   const handlePrint = useReactToPrint({
     content: () => component.current,
-    documentTitle: "пробный документ",
+    documentTitle: "Служебная записка",
   });
+  if (!dataServiceNote) {
+    return <div>Загрузка...</div>;
+  }
   return (
     <>
       <div ref={component} style={{ position: "relative", margin: "35px" }}>
-        {dataServiceNote.map((serviceNote) => {
-          return (
-            <>
-              <div key={serviceNote._id}>
-                <p>{serviceNote.creator.lastName}</p>
-              </div>
-            </>
-          );
-        })}
-        <div
-          style={{
-            position: "absolute",
-            width: "200px",
-            top: "0px",
-            right: "35px",
-            marginBottom: '40px'
-          }}
-        >
-        <p style={{}}>Индивидуальному предпринимателю </p>
-        </div>
-        <div style={{ marginTop: "40px" }}>
-          <h2 style={{ textAlign: "center" }}>Служебная записка</h2>
+        <div>
+          <p style={{ textAlign: "end" }}>
+            {`${dataServiceNote.addresser.lastName} ${dataServiceNote.addresser.firstName} ${dataServiceNote.addresser.middleName}`}
+          </p>
+          <h3 style={{ textAlign: "center" }}>
+            {dataServiceNote.nameServiceNote}
+          </h3>
+          <p>{dataServiceNote.viewServiceNote.title}</p>
           <p style={{ textAlign: "justify", textIndent: "20px" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {dataServiceNote.content}
+          </p>
+          <p style={{ textAlign: "end" }}>
+            {`${dataServiceNote.creator.lastName} ${dataServiceNote.creator.firstName} ${dataServiceNote.creator.middleName}`}
           </p>
         </div>
       </div>
-      <button onClick={handlePrint}>Print</button>
+      <div className={"container_btn_print"}>
+        <button onClick={handlePrint} className={"print"}>
+          Печатать
+        </button>
+      </div>
     </>
   );
 }
