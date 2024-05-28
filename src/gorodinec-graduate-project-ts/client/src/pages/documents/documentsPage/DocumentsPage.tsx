@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Document_style.css";
 import "../../../style/Global_style.css";
+import TabDocumentsPage from "../../../components/tabDocumentsPage/TabDocumentsPage";
 
 const URL = process.env.REACT_APP_URL;
 
@@ -93,6 +94,7 @@ function DocumentsPage() {
         </div>
       </div>
       <section>
+      <TabDocumentsPage/>
         <div className={"container_navigate"}>
           <div className={"container_search_filter"}>
             <div className={"search"}>

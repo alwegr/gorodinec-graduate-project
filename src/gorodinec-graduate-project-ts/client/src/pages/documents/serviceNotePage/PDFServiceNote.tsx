@@ -36,6 +36,7 @@ function PDFServiceNote({ serviceNoteId }: any) {
       <div ref={component} style={{ position: "relative", margin: "35px" }}>
         <div>
           <p style={{ textAlign: "end" }}>
+            Уважаемый(ая) 
             {`${dataServiceNote.addresser.lastName} ${dataServiceNote.addresser.firstName} ${dataServiceNote.addresser.middleName}`}
           </p>
           <h3 style={{ textAlign: "center" }}>

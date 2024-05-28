@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { ServiceNote } from "../DocumentInterface";
 
 const style = StyleSheet.create({
   page: {
@@ -26,21 +29,33 @@ const style = StyleSheet.create({
 });
 
 function PDFDocument() {
+  const { id } = useParams<{ id: string }>();
+  const [dataServiceNote, setDataServiceNote] = useState<ServiceNote | null>(
+    null
+  );
+
+  useEffect(() => {
+    axios
+      .get(`${URL}/get/serviceNote/${id}`)
+      .then((res) => {
+        setDataServiceNote(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  if (!dataServiceNote) {
+    return <div>Загрузка...</div>;
+  }
   return (
     <>
       <Document>
         <Page size="A4" style={style.page}>
           <Text style={style.header}>
-            Индивидуальному предпринимателю Ромашову Роману Владимировичу
+            Уважаемый(ая){" "}
+            {`${dataServiceNote.addresser.lastName} ${dataServiceNote.addresser.firstName} ${dataServiceNote.addresser.middleName}`}
           </Text>
+          <Text>{dataServiceNote.content}</Text>
           <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+          {`${dataServiceNote.creator.lastName} ${dataServiceNote.creator.firstName} ${dataServiceNote.creator.middleName}`}
           </Text>
         </Page>
       </Document>

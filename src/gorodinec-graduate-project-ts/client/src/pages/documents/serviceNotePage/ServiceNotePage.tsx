@@ -1,368 +1,202 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import TabCreateDocuments from "../../../components/tabDocuments/TabCreateDocuments";
-import Select from "react-select";
-import { style } from "../../../components/ui/select";
+import { ServiceNote } from "../DocumentInterface";
 import { IoIosArrowBack } from "react-icons/io";
-import "../../../style/Global_style.css";
-import "./ServiceNote_style.css";
+import { HiEllipsisHorizontal } from "react-icons/hi2";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import TabDocumentsPage from "../../../components/tabDocumentsPage/TabDocumentsPage";
+import "../documentsPage/Document_style.css";
+import Sidebar from "../../../components/sidebar/Sidebar";
+import { sidebarItems } from "../../../components/sidebar/DataSidebar";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PDFDocument from "./PDFDocument";
 
 const URL = process.env.REACT_APP_URL;
 
-function ServiceNote() {
-  const [creator, setCreator] = useState("");
-  const [dataCreator, setDataCreator] = useState<any[]>([]);
-  const [addresser, setAddresser] = useState("");
-  const [dataAddresser, setDataAddresser] = useState<any[]>([]);
-  const [viewServiceNote, setViewServiceNote] = useState("");
-  const [dataViewServiceNote, setDataViewServiceNote] = useState<any[]>([]);
-  const [content, setContent] = useState("");
-  const navigate = useNavigate();
+function ServiceNotePage() {
+  const [dataServiceNote, setDataServiceNote] = useState<ServiceNote[]>([]);
+  const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
+  const [filteredServiceNote, setFilteredServiceNote] = useState<ServiceNote[]>(
+    []
+  );
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
     axios
-      .get(`${URL}/get/employees`)
+      .get(`${URL}/get/serviceNote`)
       .then((res) => {
-        setDataCreator(res.data);
+        setDataServiceNote(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${URL}/get/employees`)
-      .then((res) => {
-        setDataAddresser(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  // удаление
+  const handleDelete = (id: string) => {
+    if (window.confirm(`Вы действительно хотите удалить?`)) {
+      axios
+        .delete(`${URL}/delete/serviceNote/${id}`)
+        .then((res) => {
+          console.log(res);
+          // Обновляем данные после удаления сотрудника
+          setDataServiceNote(
+            dataServiceNote.filter((serviceNote) => serviceNote._id !== id)
+          );
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   useEffect(() => {
-    axios
-      .get(`${URL}/get/viewServiceNote`)
-      .then((res) => {
-        setDataViewServiceNote(res.data);
-      })
-      .catch((err) => console.log(err));
+    const filterDocument = () => {
+      let filteredData = dataServiceNote;
+
+      // Фильтрация виду документа
+      if (filter !== "") {
+        filteredData = filteredData.filter(
+          (serviceNote) =>
+            serviceNote.viewServiceNote &&
+            serviceNote.viewServiceNote.title === filter
+        );
+      }
+
+      // Поиск создателю
+      if (searchQuery !== "") {
+        filteredData = filteredData.filter((serviceNote) => {
+          const fullName = `${serviceNote.creator.lastName} ${serviceNote.creator.firstName} ${serviceNote.creator.middleName}`;
+          return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+      }
+      setFilteredServiceNote(filteredData);
+    };
+
+    filterDocument();
+  }, [dataServiceNote, filter, searchQuery]);
+
+  // модальное окно для таблицы
+  const togglePopover = (id: string) => {
+    setOpenPopoverId(openPopoverId === id ? null : id);
+  };
+
+  // функция для закрытие togglePopover вне элемента
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (!event.target.closest(".HiEllipsisHorizontal"))
+        setOpenPopoverId(null);
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
-
-  const handleSubmitServiceNote = async (event: any) => {
-    event.preventDefault();
-    axios
-      .post(`${URL}/create/serviceNote`, {
-        creator,
-        addresser,
-        viewServiceNote,
-        content,
-      })
-      .then((res) => {
-        console.log(res);
-        navigate("/documents");
-      })
-      .catch((error) => console.log(error));
-  };
-
-  // Создатель
-  const handleCreatorChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setCreator(selectedOption.value);
-    }
-  };
-  // Кому
-  const handleAddresserChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setAddresser(selectedOption.value);
-    }
-  };
-  // Вид служебной записки
-  const handleTypeServiceNoteChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setViewServiceNote(selectedOption.value);
-    }
-  };
 
   return (
     <>
-      <div className={"header_documents"}>
-        <div className={"header_content"}>
-          <IoIosArrowBack className={"arrow_documents"} />
-          <Link to={"/documents"} className={"header_link"}>
-            Документы
-          </Link>
-          <p>/ Служебная записка</p>
-        </div>
-      </div>
-      <section>
-        <TabCreateDocuments />
-        <div className={"page_serviceNote"}>
-          <div className={"wrapper_serviceNote"}>
-            <form onSubmit={handleSubmitServiceNote}>
-              <div>
-                <label>ФИО</label>
-                <div className="select_position">
-                  <Select
-                    options={dataCreator.map((creator) => ({
-                      value: creator._id,
-                      label: `${creator.lastName} ${creator.firstName} ${creator.middleName}`,
-                    }))}
-                    onChange={handleCreatorChange}
-                    styles={style}
-                    isClearable
-                    isSearchable
-                    required
-                    placeholder={"Выберите себя"}
-                  />
-                </div>
-              </div>
-              <div>
-                <label>Кому</label>
-                <div className="select_position">
-                  <Select
-                    options={dataAddresser.map((addresser) => ({
-                      value: addresser._id,
-                      label: `${addresser.lastName} ${addresser.firstName} ${addresser.middleName}`,
-                    }))}
-                    onChange={handleAddresserChange}
-                    styles={style}
-                    isClearable
-                    isSearchable
-                    required
-                    placeholder={"Кому адресована"}
-                  />
-                </div>
-              </div>
-              <div>
-                <label>Вид служебной записки</label>
-                <div className="select_position">
-                  <Select
-                    options={dataViewServiceNote.map((viewServiceNote) => ({
-                      value: viewServiceNote._id,
-                      label: viewServiceNote.title,
-                    }))}
-                    onChange={handleTypeServiceNoteChange}
-                    styles={style}
-                    isClearable
-                    isSearchable
-                    required
-                    placeholder={"Выберите вид"}
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="content">Содержание</label>
-                <div>
-                  <textarea
-                    id="content"
-                    onChange={(e: any) => setContent(e.target.value)}
-                    value={content}
-                    required
-                    placeholder="Содержание, что Вас беспокоит"
-                  />
-                </div>
-              </div>
-              <div className={"form_buttons"}>
-                <Link to={"/documents"}>
-                  <button className={"form_btn cancel"}>Отменить</button>
-                </Link>
-                <button className={"form_btn add"}>Добавить</button>
-                {/* <Link to={"/documents/createDocument/serviceNote/pdf"}>
-                    <button>Просмотр</button>
-                </Link> */}
-              </div>
-            </form>
+      <Sidebar items={sidebarItems}>
+        <div className={"header_documents"}>
+          <div className={"header_content"}>
+            <IoIosArrowBack className={"arrow_documents"} />
+            <p>Документы</p>
           </div>
         </div>
-      </section>
+        <section>
+          <TabDocumentsPage />
+          <div className={"container_navigate"}>
+            <div className={"container_search_filter"}>
+              <div className={"search"}>
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Поиск.."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className={"container_filter"}>
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className={"filter"}
+                >
+                  <option value="">Все</option>
+                  <option value="Докладная">Докладная</option>
+                  <option value="Пояснительная">Пояснительная</option>
+                  <option value="Объяснительная">Объяснительная</option>
+                  <option value="Материальная">Маретиальная</option>
+                </select>
+              </div>
+            </div>
+            <div className={"btn_add_document"}>
+              <Link to="/documents/createDocument/serviceNote">
+                <button className={"add_document"}>Добавить</button>
+              </Link>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Наименование</th>
+                <th>Вид</th>
+                <th>Создатель</th>
+                <th>Адресат</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredServiceNote.map((serviceNote, index) => (
+                <tr key={index} data-documentId={serviceNote._id}>
+                  <td>{index + 1}</td>
+                  <td>{serviceNote.nameServiceNote}</td>
+                  <td>{serviceNote.viewServiceNote.title}</td>
+                  <td>
+                    {serviceNote.creator.lastName}⠀
+                    {serviceNote.creator.firstName.charAt(0)}.
+                    {serviceNote.creator.middleName.charAt(0)}.
+                    {/* {serviceNote.creator.map((creator) => {
+                    return `${creator.lastName} ${creator.firstName.charAt(
+                      0
+                    )}. ${creator.middleName.charAt(0)}.`;
+                  })} */}
+                  </td>
+                  <td>
+                    {serviceNote.addresser.lastName}⠀
+                    {serviceNote.addresser.firstName.charAt(0)}.
+                    {serviceNote.addresser.middleName.charAt(0)}.
+                  </td>
+                  <td>
+                    <HiEllipsisHorizontal
+                      className="HiEllipsisHorizontal"
+                      onClick={() => togglePopover(serviceNote._id)}
+                    />
+                    {openPopoverId === serviceNote._id && (
+                      <div className="popup">
+                        <div className="popup_content">
+                          <div
+                            onClick={() => handleDelete(serviceNote._id)}
+                            className="button_delete"
+                          >
+                            <p>Удалить</p>
+                          </div>
+                          <Link
+                            to={`/documents/createDocument/serviceNote/pdf/${serviceNote._id}`}
+                          >
+                            <p>Подробнее</p>
+                          </Link>
+                          {/* <PDFDownloadLink document={<PDFDocument/>} fileName="ServiceNote.pdf">
+                          {({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
+                          </PDFDownloadLink> */}
+                        </div>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </Sidebar>
     </>
   );
 }
-export default ServiceNote;
-
-
-
-
-
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import { Link } from "react-router-dom";
-// import { IoIosArrowBack } from "react-icons/io";
-// import { Document, ServiceNote, Employee } from "../DocumentInterface";
-// import TabCreateDocuments from "../../../components/tabDocuments/TabCreateDocuments";
-
-// const URL = process.env.REACT_APP_URL;
-
-// function ServiceNotePage() {
-//   const [numberDocument, setNumberDocument] = useState("");
-//   const [date, setDate] = useState("");
-//   const [serviceNote, setServiceNote] = useState<ServiceNote>({
-//     _id: "",
-//     nameServiceNote: "Служебная записка",
-//     creator: {
-//       _id: "",
-//       lastName: "",
-//       firstName: "",
-//       middleName: "",
-//     },
-//     addresser: {
-//       _id: "",
-//       lastName: "",
-//       firstName: "",
-//       middleName: "",
-//     },
-//     viewServiceNote: {
-//       _id: "",
-//       title: "",
-//     },
-//     content: "",
-//   });
-//   const [employees, setEmployees] = useState<Employee[]>([]);
-
-//   useEffect(() => {
-//     const fetchEmployees = async () => {
-//       try {
-//         const response = await axios.get<Employee[]>(`${URL}/get/employees`);
-//         setEmployees(response.data);
-//       } catch (error) {
-//         console.error("Ошибка при получении списка сотрудников:", error);
-//       }
-//     };
-
-//     fetchEmployees();
-//   }, []);
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     console.log("отправка данных: ", serviceNote);
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:3001/create/documents",
-//         document
-//       );
-//       console.log("Документ успешно добавлен:", response.data);
-//       setNumberDocument("");
-//       setDate("");
-//       setServiceNote({
-//         _id: "",
-//         nameServiceNote: "Служебная записка",
-//         creator: {
-//           _id: "",
-//           lastName: "",
-//           firstName: "",
-//           middleName: "",
-//         },
-//         addresser: {
-//           _id: "",
-//           lastName: "",
-//           firstName: "",
-//           middleName: "",
-//         },
-//         viewServiceNote: {
-//           _id: "",
-//           title: "",
-//         },
-//         content: "",
-//       });
-//     } catch (error) {
-//       console.error("Ошибка при добавлении документа:", error);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <div className={"header_documents"}>
-//         <div className={"header_content"}>
-//           <IoIosArrowBack className={"arrow_documents"} />
-//           <Link to={"/documents"} className={"header_link"}>
-//             Документы
-//           </Link>
-//           <p>/ Служебная записка</p>
-//         </div>
-//       </div>
-//       <section>
-//         <TabCreateDocuments />
-//         <div>
-//           <form onSubmit={handleSubmit}>
-//             <input
-//               type="text"
-//               value={numberDocument}
-//               onChange={(e) => setNumberDocument(e.target.value)}
-//               placeholder="Номер документа"
-//               required
-//             />
-//             <input
-//               type="date"
-//               value={date}
-//               onChange={(e) => setDate(e.target.value)}
-//               placeholder="Дата"
-//               required
-//             />
-//             <select
-//               value={serviceNote.creator._id}
-//               onChange={(e) =>
-//                 setServiceNote({
-//                   ...serviceNote,
-//                   creator: employees.find(
-//                     (employee) => employee._id === e.target.value
-//                   ) || {
-//                     _id: "",
-//                     lastName: "",
-//                     firstName: "",
-//                     middleName: "",
-//                   },
-//                 })
-//               }
-//             >
-//               <option value="">Выберите создателя</option>
-//               {employees.map((employee) => (
-//                 <option key={employee._id} value={employee._id}>
-//                   {employee.lastName} {employee.firstName} {employee.middleName}
-//                 </option>
-//               ))}
-//             </select>
-
-//             <select
-//               value={serviceNote.addresser._id}
-//               onChange={(e) =>
-//                 setServiceNote({
-//                   ...serviceNote,
-//                   addresser: employees.find(
-//                     (employee) => employee._id === e.target.value
-//                   ) || {
-//                     _id: "",
-//                     lastName: "",
-//                     firstName: "",
-//                     middleName: "",
-//                   },
-//                 })
-//               }
-//             >
-//               <option value="">Выберите адресата</option>
-//               {employees.map((employee) => (
-//                 <option key={employee._id} value={employee._id}>
-//                   {employee.lastName} {employee.firstName} {employee.middleName}
-//                 </option>
-//               ))}
-//             </select>
-
-//             <textarea
-//               value={serviceNote.content}
-//               onChange={(e) =>
-//                 setServiceNote({ ...serviceNote, content: e.target.value })
-//               }
-//               placeholder="Содержание служебной записки"
-//               required
-//             />
-
-//             <button className={"form_btn add"} type="submit">
-//               Добавить
-//             </button>
-//           </form>
-//         </div>
-//       </section>
-//     </>
-//   );
-// }
-
-// export default ServiceNotePage;
-
+export default ServiceNotePage;

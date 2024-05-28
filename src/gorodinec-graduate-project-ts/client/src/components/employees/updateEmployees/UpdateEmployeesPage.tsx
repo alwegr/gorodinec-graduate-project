@@ -175,7 +175,7 @@ function UpdateEmployees({ isOpen, onClose, employeeId }: any) {
               </div>
               <hr className={"dividing_line"} />
               <h3>Рабочая информация</h3>
-              <div className={"input_div"}>
+              {/* <div className={"input_div"}>
                 <label htmlFor="middleName">Табельный номер</label>
                 <div>
                   <input
@@ -186,7 +186,7 @@ function UpdateEmployees({ isOpen, onClose, employeeId }: any) {
                     value={personnelNumber}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className={"input_div"}>
                 <label htmlFor="position">Должность</label>
                 <div className="select_position">

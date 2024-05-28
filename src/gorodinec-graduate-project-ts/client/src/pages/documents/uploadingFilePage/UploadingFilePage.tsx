@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
-import TabCreateDocuments from "../../../components/tabDocuments/TabCreateDocuments";
+import TabCreateDocuments from "../../../components/tabCeateDocuments/TabCreateDocuments";
 import { CiFileOn } from "react-icons/ci";
 import "../../../style/Global_style.css";
 import "./UploadingFile_style.css";

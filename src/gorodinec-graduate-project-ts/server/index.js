@@ -10,6 +10,7 @@ const document = require("./router/Document");
 const serviceNote = require("./router/ServiceNote")
 const viewServiceNote = require("./router/ViewServiceNote")
 const currency = require("./router/Currency")
+const employmentContract = require("./router/EmploymentContract")
 
 
 const app = express();
@@ -33,6 +34,8 @@ app.use("/", employeeStatus);
 
 // документы
 app.use("/", document);
+
+app.use("/", employmentContract)
 
 // служебная записка
 app.use("/", serviceNote)

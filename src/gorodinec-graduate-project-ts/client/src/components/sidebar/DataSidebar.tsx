@@ -1,6 +1,7 @@
 import { IoDocumentsOutline } from "react-icons/io5"; 
 import { GoPeople } from "react-icons/go"; 
-import { IoSettingsOutline } from "react-icons/io5"; 
+import { IoBookmarksOutline } from "react-icons/io5";
+import { PiSuitcaseSimple } from "react-icons/pi";
 // import { IoMdArrowDropright } from "react-icons/io";
 
 export const sidebarItems = [
@@ -10,9 +11,19 @@ export const sidebarItems = [
         icon: <IoDocumentsOutline />
     },
     {
+        path: '/counterparties',
+        title: 'Контрагенты',
+        icon: <PiSuitcaseSimple />
+    },
+    {
         path: '/employees',
         title: 'Сотрудники',
         icon: <GoPeople />
+    },
+    {
+        path: '/referenceBook',
+        title: 'Справочник',
+        icon: <IoBookmarksOutline />
     },
    
 ]

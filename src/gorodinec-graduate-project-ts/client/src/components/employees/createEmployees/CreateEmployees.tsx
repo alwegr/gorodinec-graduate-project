@@ -145,7 +145,6 @@ function CreateEmployees({ isOpen, onClose }: any) {
                     placeholder="Иванович"
                     onChange={(e: any) => setMiddleName(e.target.value)}
                     value={middleName}
-                    required
                   />
                 </div>
               </div>
