@@ -26,6 +26,7 @@ router.post("/create/serviceNote", (req, res) => {
   const { creator, addresser, viewServiceNote, content } = req.body;
   const newProject = new ServiceNoteModel({
     nameServiceNote: "Служебная записка",
+    dateServiceNote: Date.now(),
     creator,
     addresser,
     viewServiceNote,

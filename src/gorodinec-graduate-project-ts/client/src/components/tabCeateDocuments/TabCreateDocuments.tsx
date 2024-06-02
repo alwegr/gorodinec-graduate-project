@@ -47,7 +47,7 @@ function TabCreateDocuments() {
             >
               <Link to={`/documents/createDocument/contract`}>Договор</Link>
             </li>
-            <li
+            {/* <li
               className={
                 activeMenu === `/documents/createDocument/file` 
                 ? "active" 
@@ -55,7 +55,7 @@ function TabCreateDocuments() {
               }
             >
               <Link to={`/documents/createDocument/file`}>Загрузить файл</Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

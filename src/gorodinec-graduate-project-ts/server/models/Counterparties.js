@@ -6,7 +6,9 @@ const CounterpartiesSchema = new mongoose.Schema({
     telephone: String,
     email: String,
     legalAddress: String,
-    mailingAddress: String
+    mailingAddress: String,
+    bic: String,
+    numberBic: Number,
 });
 
 const CounterpartiesModel = mongoose.model("Counterparties", CounterpartiesSchema);

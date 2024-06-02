@@ -5,20 +5,11 @@ const EmploymentContractSchema = new mongoose.Schema({
     type: String,
     enum: ["Трудовой договор"]
   },
-  dateEmploymentContract: Date,
-  lastName: String,
-  firstName: String,
-  middleName: String,
-  gender: String,
-//   personnelNumber: Number,
-  // position: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Position",
-  // },
-  // divisions: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Divisions",
-  // },
+  dateEmploymentContract: { type: Date, default: Date.now },
+  employees: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Employees",
+  },
   seriesPassport: Number,
   numberPassport: Number,
   issued: String,

@@ -3,7 +3,10 @@ section{
 }
 
 input[type=text],
-input[type=number]{
+input[type=number],
+input[type=email],
+input[type=tel],
+input[type=date]{
     width: 100%;
     margin: 8px 0 12px 0;
     border: 1px solid var(--border);
@@ -95,6 +98,14 @@ td {
 tr:nth-of-type(2n){
     background: var(--table-even);
 }
+.button_details p{
+    padding: 12px;
+    color: var(--border);
+}
+.button_details:hover{
+    background: rgba(25, 111, 173, 0.05);
+}
+
 
 @media screen and (max-width: 1183px) {
     table {

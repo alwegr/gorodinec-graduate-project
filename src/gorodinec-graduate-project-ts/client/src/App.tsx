@@ -1,13 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Sidebar from './components/sidebar/Sidebar';
 // import DocumentsPage from './pages/documents/documentsPage/DocumentsPage';
 import EmployeesPage from './pages/employees/EmployeesPage';
 
-import Contract from './pages/documents/contractPage/ContractPage';
+import Contract from './pages/documents/contractPage/CreateContractPage';
 import UploadingFile from './pages/documents/uploadingFilePage/UploadingFilePage';
-import UpdateEmployees from './components/employees/updateEmployees/UpdateEmployeesPage';
 import PDFServiceNote from './pages/documents/serviceNotePage/PDFServiceNote';
 
 import ServiceNotePage from './pages/documents/serviceNotePage/ServiceNotePage';
@@ -17,9 +15,7 @@ import CreateEmploymentContract from './pages/documents/employmentContractPage/C
 import ReferenceBook from './pages/referenceBook/ReferenceBook';
 import Counterparties from './pages/counterparties/CounterpartiesPage';
 import PDFEmploymentContract from './pages/documents/employmentContractPage/PDFEmploymentContract';
-
-
-
+import ContractPage from './pages/documents/contractPage/ContractPage';
 
 
 
@@ -43,6 +39,7 @@ function App() {
             <Route path='/documents/createDocument/serviceNote/pdf/:id' element={<PDFServiceNote/>}/> 
 
             {/* Договор */}
+            <Route path='/documents/contract' element={<ContractPage/>}/>
             <Route path='/documents/createDocument/contract' element={<Contract/>}/>
             <Route path='/documents/createDocument/file' element={<UploadingFile/>}/>
 

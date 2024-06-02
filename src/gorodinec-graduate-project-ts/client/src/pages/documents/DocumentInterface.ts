@@ -8,7 +8,8 @@ export interface Document {
 export interface ServiceNote {
   _id: string;
   nameServiceNote: string;
-  creator: Employee,
+  dateServiceNote: Date;
+  creator: Employee;
   addresser: {
     _id: string;
     lastName: string;
@@ -31,8 +32,8 @@ export interface Employee {
 
 export interface EmploymentContract{
   _id: string;
-  dateEmploymentContract: string,
-  nameEmploymentContract: string,
+  dateEmploymentContract: Date;
+  nameEmploymentContract: string;
   lastName: string;
   firstName: string;
   middleName: string;
@@ -51,4 +52,23 @@ export interface EmploymentContract{
   dateOfIssue: Date,
   departmentCode: number,
   salary: number,
+}
+
+export interface Counterpartie{
+  _id: string;
+  nameCounterparties: string;
+  inn: string;
+  telephone: string;
+  email: string;
+  legalAddress: string;
+  mailingAddress: string;
+  bic: string;
+  numberBic: number;
+}
+
+export interface Currency{
+  _id: string;
+  title: string;
+  digitalCode: string;
+  letterCode: string;
 }

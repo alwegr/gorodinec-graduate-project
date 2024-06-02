@@ -105,22 +105,7 @@ function CreateEmploymentContract() {
               >
                 <div className={"container_colum_item"}>
                   <h3>Личные данные</h3>
-                  <div>
-                    <label htmlFor="date">Дата</label>
-                    <div>
-                      <input
-                        type="date"
-                        id="end"
-                        name="trip-end"
-                        min="2024-01-01"
-                        max="2074-12-31"
-                        onChange={(e: any) =>
-                          setDateEmploymentContract(e.target.value)
-                        }
-                        value={dateEmploymentContract}
-                      />
-                    </div>
-                  </div>
+                  
                   <div className={"personal_information"}>
                     <label htmlFor="lastName">Фамилия</label>
                     <div>

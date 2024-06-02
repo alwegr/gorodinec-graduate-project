@@ -6,7 +6,7 @@ import { PiSuitcaseSimple } from "react-icons/pi";
 
 export const sidebarItems = [
     {
-        path: '/documents',
+        path: '/documents/serviceNote',
         title: 'Документы',
         icon: <IoDocumentsOutline />
     },

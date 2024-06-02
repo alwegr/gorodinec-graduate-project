@@ -7,6 +7,7 @@ import { HiEllipsisHorizontal } from "react-icons/hi2";
 import TabDocumentsPage from "../../../components/tabDocumentsPage/TabDocumentsPage";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import { sidebarItems } from "../../../components/sidebar/DataSidebar";
+import "../../../style/Global_style.css"
 
 const URL = process.env.REACT_APP_URL;
 
@@ -15,6 +16,11 @@ function EmploymentContractPage() {
     EmploymentContract[]
   >([]);
   const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
+  const [filtereEmploymentContract, setFilteredEmploymentContract] = useState<
+    EmploymentContract[]
+  >([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
     axios
@@ -24,6 +30,32 @@ function EmploymentContractPage() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    const filterDocument = () => {
+      let filteredData = dataEmploymentContract;
+
+      // Фильтрация виду документа
+      if (filter !== "") {
+        filteredData = filteredData.filter(
+          (employmentContract) =>
+            employmentContract.position &&
+            employmentContract.position.title === filter
+        );
+      }
+
+      // Поиск создателю
+      if (searchQuery !== "") {
+        filteredData = filteredData.filter((employmentContract) => {
+          const fullName = `${employmentContract.lastName} ${employmentContract.firstName} ${employmentContract.middleName}`;
+          return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+      }
+      setFilteredEmploymentContract(filteredData);
+    };
+
+    filterDocument();
+  }, [dataEmploymentContract, filter, searchQuery]);
 
   const handleDelete = (id: string) => {
     if (window.confirm(`Вы действительно хотите удалить?`)) {
@@ -42,6 +74,7 @@ function EmploymentContractPage() {
     }
   };
 
+  // модальное окно для таблицы
   const togglePopover = (id: string) => {
     setOpenPopoverId(openPopoverId === id ? null : id);
   };
@@ -76,14 +109,14 @@ function EmploymentContractPage() {
                   type="text"
                   name="search"
                   placeholder="Поиск.."
-                  // value={searchQuery}
-                  // onChange={(e) => setSearchQuery(e.target.value)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <div className={"container_filter"}>
                 <select
-                  // value={filter}
-                  // onChange={(e) => setFilter(e.target.value)}
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
                   className={"filter"}
                 >
                   <option value="">Все</option>
@@ -112,12 +145,11 @@ function EmploymentContractPage() {
               </tr>
             </thead>
             <tbody>
-              {dataEmploymentContract.map((employmentContract, index) => (
+              {filtereEmploymentContract.map((employmentContract, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{employmentContract.nameEmploymentContract}</td>
                   <td>
-                    {" "}
                     {new Date(
                       employmentContract.dateEmploymentContract
                     ).toLocaleDateString()}
@@ -142,11 +174,13 @@ function EmploymentContractPage() {
                           >
                             <p>Удалить</p>
                           </div>
-                          <Link
-                            to={`/documents/createDocument/employmentContract/pdf/${employmentContract._id}`}
-                          >
-                            <p>Подробнее</p>
-                          </Link>
+                          <div className="button_details">
+                            <Link
+                              to={`/documents/createDocument/employmentContract/pdf/${employmentContract._id}`}
+                            >
+                              <p>Подробнее</p>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     )}

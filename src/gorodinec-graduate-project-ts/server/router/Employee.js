@@ -24,15 +24,7 @@ router.get("/get/employees/:id", (req, res) => {
 
 // Добавление сотрудника
 router.post("/create/employees", (req, res) => {
-  const {
-    lastName,
-    firstName,
-    middleName,
-    gender,
-    personnelNumber,
-    position,
-    divisions,
-    employeeStatus,
+  const { lastName,firstName,middleName,gender, personnelNumber, position,divisions,employeeStatus,
   } = req.body;
   const newProject = new EmployeesModel({
     lastName,

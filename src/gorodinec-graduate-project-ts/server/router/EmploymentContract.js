@@ -5,8 +5,7 @@ const router = express.Router();
 // Получение
 router.get("/get/employmentContract", (req, res) => {
   EmploymentContractModel.find()
-    .populate("position")
-    .populate("divisions")
+    .populate("employees")
     .then((employmentContract) => res.json(employmentContract))
     .catch((err) => res.json(err));
 });
@@ -14,8 +13,7 @@ router.get("/get/employmentContract", (req, res) => {
 router.get("/get/employmentContract/:id", (req, res) => {
   const id = req.params.id;
   EmploymentContractModel.findById({ _id: id })
-    .populate("position")
-    .populate("divisions")
+    .populate("employees")
     .then((post) => res.json(post))
     .catch((err) => console.log(err));
 });
@@ -23,13 +21,6 @@ router.get("/get/employmentContract/:id", (req, res) => {
 // Добавление
 router.post("/create/employmentContract", (req, res) => {
   const {
-    dateEmploymentContract,
-    lastName,
-    firstName,
-    middleName,
-    gender,
-    position,
-    divisions,
     seriesPassport,
     numberPassport,
     issued,
@@ -38,14 +29,8 @@ router.post("/create/employmentContract", (req, res) => {
     salary,
   } = req.body;
   const newProject = new EmploymentContractModel({
-    dateEmploymentContract,
     nameEmploymentContract: 'Трудовой договор',
-    lastName,
-    firstName,
-    middleName,
-    gender,
-    position,
-    divisions,
+    dateEmploymentContract: Date.now(),
     seriesPassport,
     numberPassport,
     issued,

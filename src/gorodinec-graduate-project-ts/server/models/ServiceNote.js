@@ -5,6 +5,7 @@ const ServiceNoteSchema = new mongoose.Schema({
     type: String,
     enum: ["Служебная записка"]
   },
+  dateServiceNote: { type: Date, default: Date.now },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employees",

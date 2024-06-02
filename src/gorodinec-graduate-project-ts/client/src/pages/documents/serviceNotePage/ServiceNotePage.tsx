@@ -10,6 +10,7 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import { sidebarItems } from "../../../components/sidebar/DataSidebar";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PDFDocument from "./PDFDocument";
+import "../../../style/Global_style.css"
 
 const URL = process.env.REACT_APP_URL;
 
@@ -137,6 +138,7 @@ function ServiceNotePage() {
               <tr>
                 <th>№</th>
                 <th>Наименование</th>
+                <th>Дата</th>
                 <th>Вид</th>
                 <th>Создатель</th>
                 <th>Адресат</th>
@@ -148,6 +150,9 @@ function ServiceNotePage() {
                 <tr key={index} data-documentId={serviceNote._id}>
                   <td>{index + 1}</td>
                   <td>{serviceNote.nameServiceNote}</td>
+                  <td>
+                    {new Date(serviceNote.dateServiceNote).toLocaleDateString()}
+                  </td>
                   <td>{serviceNote.viewServiceNote.title}</td>
                   <td>
                     {serviceNote.creator.lastName}⠀
@@ -178,11 +183,13 @@ function ServiceNotePage() {
                           >
                             <p>Удалить</p>
                           </div>
-                          <Link
-                            to={`/documents/createDocument/serviceNote/pdf/${serviceNote._id}`}
-                          >
-                            <p>Подробнее</p>
-                          </Link>
+                          <div  className="button_details">
+                            <Link
+                              to={`/documents/createDocument/serviceNote/pdf/${serviceNote._id}`}
+                            >
+                              <p>Подробнее</p>
+                            </Link>
+                          </div>
                           {/* <PDFDownloadLink document={<PDFDocument/>} fileName="ServiceNote.pdf">
                           {({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
                           </PDFDownloadLink> */}
