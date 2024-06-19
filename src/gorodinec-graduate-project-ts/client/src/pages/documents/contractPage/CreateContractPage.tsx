@@ -9,6 +9,7 @@ import "../../../style/Global_style.css";
 import "./Contract_style.css";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import { sidebarItems } from "../../../components/sidebar/DataSidebar";
+import { Counterpartie, CounterpartiesFormData } from "../DocumentInterface";
 
 const URL = process.env.REACT_APP_URL;
 
@@ -22,8 +23,18 @@ function Contract() {
   const [subjectAgreement, setSubjectAgreement] = useState("");
   const [createContract, setCreateContract] = useState("");
   const [dataCreateContract, setDataCreateContract] = useState<any[]>([]);
-
+  // const [counterparties, setCounterparties] = useState("");
+  const [counterparties, setCounterparties] = useState<Counterpartie[]>([]);
   const navigate = useNavigate();
+
+  const [counterpartiesData, setCounterpartiestData] = useState<CounterpartiesFormData>({
+    counterpartieId: [],
+  });
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
 
   useEffect(() => {
     axios
@@ -51,6 +62,26 @@ function Contract() {
       .catch((err) => console.log(err));
   }, []);
 
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get<Counterpartie[]>(
+        `${URL}/get/counterparties`
+      );
+      setCounterparties(response.data);
+    } catch (error) {
+      console.error("Ошибка:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`${URL}/get/counterparties`)
+  //     .then((res) => {
+  //       setDataCounterparties(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
   const handleContracte = async (event: any) => {
     event.preventDefault();
     axios
@@ -61,6 +92,7 @@ function Contract() {
         statusContract,
         subjectAgreement,
         createContract,
+        counterparties
       })
       .then((res) => {
         console.log(res);
@@ -68,6 +100,8 @@ function Contract() {
       })
       .catch((error) => console.log(error));
   };
+  
+
 
   // валюта
   const handleCurrencyChange = (selectedOption: any) => {
@@ -87,13 +121,20 @@ function Contract() {
       setCreateContract(selectedOption.value);
     }
   };
+  // контрагент
+  const handleCounterpartiesChange = (selectedOption: any) => {
+    if (selectedOption) {
+      const counterpartiesIds = selectedOption.map((option: any) => option.value);
+      setCounterpartiestData({...counterpartiesData, counterpartieId: counterpartiesIds});
+    }
+  };
   return (
     <>
       <Sidebar items={sidebarItems}>
         <div className={"header_documents"}>
           <div className={"header_content"}>
             <IoIosArrowBack className={"arrow_documents"} />
-            <Link to={"/documents"} className={"header_link"}>
+            <Link to={"/documents/contract"} className={"header_link"}>
               Документы
             </Link>
             <p>/ Создать договор</p>
@@ -192,6 +233,24 @@ function Contract() {
                         isSearchable
                         required
                         placeholder={"Статус"}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="currency">Контрагенты</label>
+                    <div className="select_position">
+                      <Select
+                        options={counterparties.map((counterparties) => ({
+                          value: counterparties._id,
+                          label: `${counterparties.nameCounterparties} `,
+                        }))}
+                        onChange={handleCounterpartiesChange}
+                        isMulti
+                        styles={style}
+                        required
+                        isClearable
+                        isSearchable
+                        placeholder={"Контрагенты"}
                       />
                     </div>
                   </div>

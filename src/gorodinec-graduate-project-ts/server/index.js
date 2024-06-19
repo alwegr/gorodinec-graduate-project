@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const authUser = require("./router/AuthUserRouter")
 const employee = require("./router/Employee");
 const position = require("./router/Position");
 const divisions = require("./router/Divisions");
@@ -9,7 +10,7 @@ const employeeStatus = require("./router/EmployeeStatus");
 const serviceNote = require("./router/ServiceNote")
 const viewServiceNote = require("./router/ViewServiceNote")
 const currency = require("./router/Currency")
-const contract = require("./router/Contract")
+const contract = require("./router/ContractRouter")
 const statusContract = require("./router/StatusContract")
 const employmentContract = require("./router/EmploymentContract")
 const counterparties = require("./router/Counterparties")
@@ -24,6 +25,9 @@ mongoose
   .then((db) => console.log("База данных подключена"))
   .catch((error) => console.log(error));
 
+
+//auth
+app.use("/auth", authUser)
 // сотрудники
 app.use("/", employee);
 app.use("/", divisions);

@@ -1,15 +1,26 @@
-export interface Document {
-  _id: string;
-  numberDocument: string;
-  date: string;
-  serviceNote: ServiceNote;
+export interface Contract{
+  _id: string,
+  nameContract: string,
+  dateStart: Date,
+  dateEnd: Date,
+  currency: Currency,
+  price: number,
+  statusContract: StatusContract,
+  subjectAgreement: string,
+  createContract: EmployeeContract,
+  counterparties: Counterpartie[],
 }
+
+export interface CounterpartiesFormData {
+  counterpartieId: string[];
+}
+
 
 export interface ServiceNote {
   _id: string;
   nameServiceNote: string;
   dateServiceNote: Date;
-  creator: Employee;
+  creator: EmployeeServiceNote;
   addresser: {
     _id: string;
     lastName: string;
@@ -21,13 +32,6 @@ export interface ServiceNote {
     title: string;
   };
   content: string;
-}
-
-export interface Employee {
-  _id: string;
-  lastName: string;
-  firstName: string;
-  middleName: string;
 }
 
 export interface EmploymentContract{
@@ -53,6 +57,30 @@ export interface EmploymentContract{
   departmentCode: number,
   salary: number,
 }
+
+export interface EmployeeContract{
+  _id: string;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  position: {
+    _id: string;
+    title: string;
+  };
+}
+
+export interface StatusContract{
+  _id: string,
+  title: string,
+}
+
+export interface EmployeeServiceNote {
+  _id: string;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+}
+
 
 export interface Counterpartie{
   _id: string;

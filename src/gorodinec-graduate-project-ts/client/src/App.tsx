@@ -16,6 +16,9 @@ import ReferenceBook from './pages/referenceBook/ReferenceBook';
 import Counterparties from './pages/counterparties/CounterpartiesPage';
 import PDFEmploymentContract from './pages/documents/employmentContractPage/PDFEmploymentContract';
 import ContractPage from './pages/documents/contractPage/ContractPage';
+import Login from './pages/auth/login/Login';
+import Register from './pages/auth/register/Register';
+import PDFDocument from './pages/documents/serviceNotePage/PDFDocument';
 
 
 
@@ -27,6 +30,8 @@ function App() {
           <Routes>
             {/* Документы */}
             {/* <Route path='/documents' element={<DocumentsPage/>}/> */}
+            <Route path='/' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
 
             {/* Трудовой договор */}
             <Route path='/documents' element={<EmploymentContractPage/>}/>
@@ -37,6 +42,7 @@ function App() {
             <Route path='/documents/serviceNote' element={<ServiceNotePage/>}/>
             <Route path='/documents/createDocument/serviceNote' element={<CreateServiceNote/>}/>
             <Route path='/documents/createDocument/serviceNote/pdf/:id' element={<PDFServiceNote/>}/> 
+            <Route path='/documents/createDocument/serviceNoteDoc/pdf/:id' element={<PDFDocument/> }/>
 
             {/* Договор */}
             <Route path='/documents/contract' element={<ContractPage/>}/>

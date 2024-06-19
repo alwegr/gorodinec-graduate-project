@@ -90,7 +90,7 @@ function CreateServiceNote() {
         <div className={"header_documents"}>
           <div className={"header_content"}>
             <IoIosArrowBack className={"arrow_documents"} />
-            <Link to={"/documents"} className={"header_link"}>
+            <Link to={"/documents/serviceNote"} className={"header_link"}>
               Документы
             </Link>
             <p>/ Создать служебную записку</p>

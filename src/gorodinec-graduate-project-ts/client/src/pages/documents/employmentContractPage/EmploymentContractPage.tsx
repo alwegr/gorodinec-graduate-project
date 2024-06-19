@@ -158,8 +158,7 @@ function EmploymentContractPage() {
                     {employmentContract.lastName} {employmentContract.firstName}{" "}
                     {employmentContract.middleName}
                   </td>
-                  <td>{employmentContract.position.title}</td>
-                  <td>{employmentContract.divisions.title}</td>
+
                   <td>
                     <HiEllipsisHorizontal
                       className="HiEllipsisHorizontal"

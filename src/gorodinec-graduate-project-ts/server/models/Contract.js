@@ -21,7 +21,12 @@ const ContractSchema = new mongoose.Schema(
         createContract: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Employees",
-        }
+        },
+        counterparties: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Counterparties",
+        }],
+
     }
 )
 

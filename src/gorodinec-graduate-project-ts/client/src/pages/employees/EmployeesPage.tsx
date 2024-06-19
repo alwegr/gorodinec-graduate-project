@@ -26,7 +26,7 @@ function Employees() {
     axios
       .get(`${URL}/get/employees`)
       .then((res) => {
-        setDataEmployee(res.data);
+        setDataEmployee(res.data); 
       })
       .catch((err) => console.log(err));
   }, []);

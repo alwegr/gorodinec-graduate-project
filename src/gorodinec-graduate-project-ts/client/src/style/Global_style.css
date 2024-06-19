@@ -6,7 +6,8 @@ input[type=text],
 input[type=number],
 input[type=email],
 input[type=tel],
-input[type=date]{
+input[type=date],
+input[type=password]{
     width: 100%;
     margin: 8px 0 12px 0;
     border: 1px solid var(--border);
@@ -140,4 +141,8 @@ tr:nth-of-type(2n){
         text-transform: uppercase;
         font-weight: bold;
     }
+}
+
+.container_btn_print{
+    margin-top: 20px;
 }
