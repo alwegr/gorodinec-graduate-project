@@ -146,3 +146,15 @@ tr:nth-of-type(2n){
 .container_btn_print{
     margin-top: 20px;
 }
+
+.link_table{
+    color: black;
+}
+.seria_number_passport{
+    display: flex;
+    gap: 2rem;
+
+}
+.probel{
+    height: 70px;
+}

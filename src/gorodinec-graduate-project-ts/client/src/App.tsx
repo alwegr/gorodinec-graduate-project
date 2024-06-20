@@ -5,7 +5,6 @@ import './App.css';
 import EmployeesPage from './pages/employees/EmployeesPage';
 
 import Contract from './pages/documents/contractPage/CreateContractPage';
-import UploadingFile from './pages/documents/uploadingFilePage/UploadingFilePage';
 import PDFServiceNote from './pages/documents/serviceNotePage/PDFServiceNote';
 
 import ServiceNotePage from './pages/documents/serviceNotePage/ServiceNotePage';
@@ -19,6 +18,7 @@ import ContractPage from './pages/documents/contractPage/ContractPage';
 import Login from './pages/auth/login/Login';
 import Register from './pages/auth/register/Register';
 import PDFDocument from './pages/documents/serviceNotePage/PDFDocument';
+import PDFContract from './pages/documents/contractPage/PDFContract';
 
 
 
@@ -47,8 +47,7 @@ function App() {
             {/* Договор */}
             <Route path='/documents/contract' element={<ContractPage/>}/>
             <Route path='/documents/createDocument/contract' element={<Contract/>}/>
-            <Route path='/documents/createDocument/file' element={<UploadingFile/>}/>
-
+            <Route path='/documents/createDocument/contract/pdf/:id' element={<PDFContract/>}/>
             <Route path='/counterparties' element={<Counterparties/>}/>
 
 

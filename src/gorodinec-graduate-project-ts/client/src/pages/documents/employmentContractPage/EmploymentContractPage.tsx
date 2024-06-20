@@ -7,7 +7,7 @@ import { HiEllipsisHorizontal } from "react-icons/hi2";
 import TabDocumentsPage from "../../../components/tabDocumentsPage/TabDocumentsPage";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import { sidebarItems } from "../../../components/sidebar/DataSidebar";
-import "../../../style/Global_style.css"
+import "../../../style/Global_style.css";
 
 const URL = process.env.REACT_APP_URL;
 
@@ -140,7 +140,6 @@ function EmploymentContractPage() {
                 <th>Дата</th>
                 <th>ФИО</th>
                 <th>Должность</th>
-                <th>Подразделение</th>
                 <th></th>
               </tr>
             </thead>
@@ -148,7 +147,9 @@ function EmploymentContractPage() {
               {filtereEmploymentContract.map((employmentContract, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{employmentContract.nameEmploymentContract}</td>
+                  <Link to={`/documents/createDocument/employmentContract/pdf/${employmentContract._id}`} className={"link_table"}>
+                     <td>{employmentContract.nameEmploymentContract}</td>
+                  </Link>
                   <td>
                     {new Date(
                       employmentContract.dateEmploymentContract
@@ -158,8 +159,13 @@ function EmploymentContractPage() {
                     {employmentContract.lastName} {employmentContract.firstName}{" "}
                     {employmentContract.middleName}
                   </td>
-
                   <td>
+                    {employmentContract.position
+                      ? employmentContract.position.title
+                      : "Нет данных"}
+                  </td>
+
+                  {/* <td>
                     <HiEllipsisHorizontal
                       className="HiEllipsisHorizontal"
                       onClick={() => togglePopover(employmentContract._id)}
@@ -183,7 +189,7 @@ function EmploymentContractPage() {
                         </div>
                       </div>
                     )}
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

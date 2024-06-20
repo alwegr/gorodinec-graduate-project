@@ -3,37 +3,24 @@ const router = express.Router();
 const ContractModal = require("../models/Contract");
 
 // Получение
-router.get("/get/contract", async (req, res) => {
-  try{
-    const counterpartiesContract = await ContractModal.find()
+router.get("/get/contract", (req, res) => {
+    ContractModal.find()
     .populate("currency")
     .populate("statusContract")
     .populate("createContract")
-    .populate({
-      path: "counterparties",
-      populate: {path: "nameCounterparties"}
-    })
-    res.json(counterpartiesContract)
-  }catch(error){
-    console.error(error, "ошибка")
-  }
+    .populate("counterparties")
+    .then((contract) => res.json(contract))
+    .catch((err) => res.json(err));
 });
-router.get("/get/contract/:id", async (req, res) => {
-  try{
-    const counterpartiesContract = await ContractModal.find(req.params.id)
+router.get("/get/contract/:id", (req, res) => {
+  const id = req.params.id;
+  ContractModal.findById({ _id: id })
     .populate("currency")
     .populate("statusContract")
     .populate("createContract")
-    .populate({
-      path: "counterparties",
-      populate: {path: "nameCounterparties"}
-    })
-   if(!counterpartiesContract){
-    console.res("Связь сотрудника и проекта не найдена");
-   }
-  }catch(error){
-    console.error(error, "Ошибка при получении связи сотрудника и проекта")
-  }
+    .populate("counterparties")
+    .then((post) => res.json(post))
+    .catch((err) => console.log(err));
 });
 
 // Добавление
@@ -52,6 +39,19 @@ router.post("/create/contract", (req, res) => {
   });
   newProject
     .save()
+    .then((contract) => res.json(contract))
+    .catch((err) => res.json(err));
+});
+
+router.put("/update/contract/:id", (req, res) => {
+  const id = req.params.id;
+  ContractModal.findByIdAndUpdate(
+    id,
+    {
+      statusContract: req.body.statusContract,
+    },
+    { new: true }
+  )
     .then((contract) => res.json(contract))
     .catch((err) => res.json(err));
 });

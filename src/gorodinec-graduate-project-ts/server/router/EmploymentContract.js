@@ -5,7 +5,7 @@ const router = express.Router();
 // Получение
 router.get("/get/employmentContract", (req, res) => {
   EmploymentContractModel.find()
-    .populate("employees")
+    .populate("position")
     .then((employmentContract) => res.json(employmentContract))
     .catch((err) => res.json(err));
 });
@@ -13,7 +13,7 @@ router.get("/get/employmentContract", (req, res) => {
 router.get("/get/employmentContract/:id", (req, res) => {
   const id = req.params.id;
   EmploymentContractModel.findById({ _id: id })
-    .populate("employees")
+    .populate("position")
     .then((post) => res.json(post))
     .catch((err) => console.log(err));
 });
@@ -21,6 +21,11 @@ router.get("/get/employmentContract/:id", (req, res) => {
 // Добавление
 router.post("/create/employmentContract", (req, res) => {
   const {
+    lastName,
+    firstName,
+    middleName,
+    address,
+    position,
     seriesPassport,
     numberPassport,
     issued,
@@ -31,6 +36,11 @@ router.post("/create/employmentContract", (req, res) => {
   const newProject = new EmploymentContractModel({
     nameEmploymentContract: 'Трудовой договор',
     dateEmploymentContract: Date.now(),
+    lastName,
+    firstName,
+    middleName,
+    address,
+    position,
     seriesPassport,
     numberPassport,
     issued,
@@ -44,26 +54,6 @@ router.post("/create/employmentContract", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-// Изменение
-router.put("/update/employmentContract/:id", (req, res) => {
-  const id = req.params.id;
-  EmploymentContractModel.findByIdAndUpdate(
-    id,
-    {
-      lastName: req.body.lastName,
-      firstName: req.body.firstName,
-      middleName: req.body.middleName,
-      gender: req.body.gender,
-      personnelNumber: req.body.personnelNumber,
-      position: req.body.position,
-      divisions: req.body.divisions,
-      employeeStatus: req.body.employeeStatus,
-    },
-    { new: true }
-  )
-    .then((employmentContract) => res.json(employmentContract))
-    .catch((err) => res.json(err));
-});
 
 // Удаление
 router.delete("/delete/employmentContract/:id", (req, res) => {

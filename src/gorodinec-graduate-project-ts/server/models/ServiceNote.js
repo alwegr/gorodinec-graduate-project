@@ -23,5 +23,4 @@ const ServiceNoteSchema = new mongoose.Schema({
 });
 
 const ServiceNoteModal = mongoose.model("ServiceNote", ServiceNoteSchema);
-
 module.exports = ServiceNoteModal;

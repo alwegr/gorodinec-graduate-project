@@ -6,9 +6,13 @@ const EmploymentContractSchema = new mongoose.Schema({
     enum: ["Трудовой договор"]
   },
   dateEmploymentContract: { type: Date, default: Date.now },
-  employees: {
+  lastName: String,
+  firstName: String,
+  middleName: String,
+  address: String,
+  position:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Employees",
+    ref: "Position",
   },
   seriesPassport: Number,
   numberPassport: Number,

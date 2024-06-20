@@ -1,5 +1,5 @@
 .tab_container{
-    width: min(100% - 25px, 1560px);
+    width: min(100% - 2px, 1200px);
     margin: 0 auto;
 }
 .menu{

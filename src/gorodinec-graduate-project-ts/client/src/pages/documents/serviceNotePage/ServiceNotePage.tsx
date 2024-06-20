@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ServiceNote } from "../DocumentInterface";
 import { IoIosArrowBack } from "react-icons/io";
-import { HiEllipsisHorizontal } from "react-icons/hi2";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TabDocumentsPage from "../../../components/tabDocumentsPage/TabDocumentsPage";
 import "../documentsPage/Document_style.css";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import { sidebarItems } from "../../../components/sidebar/DataSidebar";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import PDFDocument from "./PDFDocument";
 import "../../../style/Global_style.css";
-import PDFServiceNote from "./PDFServiceNote";
-import ServiceNoteDetails from "../../../components/document/serviceNote/ServiceNoteDetails";
-import Login from "../../auth/login/Login";
+
 
 const URL = process.env.REACT_APP_URL;
 
@@ -25,9 +20,6 @@ function ServiceNotePage() {
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
-  const [isModaleOpen, setIsModaleOpen] = useState<boolean>(false);
-  const [selectedServiceNoteId, setSelectedServiceNoteId] =
-    useState<string>("");
 
   useEffect(() => {
     axios
@@ -97,16 +89,7 @@ function ServiceNotePage() {
     };
   }, []);
 
-  // модальное окно просмотра служебной запсики
-  const handleServiceNoteDetails = (id: string) => {
-    setSelectedServiceNoteId(id);
-    setIsModaleOpen(true);
-  };
-  const handleCloseServiceNoteDetails = () => {
-    setIsModaleOpen(false);
-  };
 
- 
   return (
     <>
       <Sidebar items={sidebarItems}>
@@ -165,7 +148,12 @@ function ServiceNotePage() {
               {filteredServiceNote.map((serviceNote, index) => (
                 <tr key={index} data-documentId={serviceNote._id}>
                   <td>{index + 1}</td>
-                  <td>{serviceNote.nameServiceNote}</td>
+                  <Link
+                    to={`/documents/createDocument/serviceNoteDoc/pdf/${serviceNote._id}`}
+                    className={"link_table"}
+                  >
+                    <td>{serviceNote.nameServiceNote}</td>
+                  </Link>
                   <td>
                     {new Date(serviceNote.dateServiceNote).toLocaleDateString()}
                   </td>
@@ -174,18 +162,13 @@ function ServiceNotePage() {
                     {serviceNote.creator.lastName}⠀
                     {serviceNote.creator.firstName.charAt(0)}.
                     {serviceNote.creator.middleName.charAt(0)}.
-                    {/* {serviceNote.creator.map((creator) => {
-                    return `${creator.lastName} ${creator.firstName.charAt(
-                      0
-                    )}. ${creator.middleName.charAt(0)}.`;
-                  })} */}
                   </td>
                   <td>
                     {serviceNote.addresser.lastName}⠀
                     {serviceNote.addresser.firstName.charAt(0)}.
                     {serviceNote.addresser.middleName.charAt(0)}.
                   </td>
-                  <td>
+                  {/* <td>
                     <HiEllipsisHorizontal
                       className="HiEllipsisHorizontal"
                       onClick={() => togglePopover(serviceNote._id)}
@@ -209,11 +192,15 @@ function ServiceNotePage() {
                           </div>
                           <div className="button_details">
                             <Link
-                              to={`/documents/createDocument/serviceNoteDoc/pdf/${serviceNote._id}`}>
+                              to={`/documents/createDocument/serviceNoteDoc/pdf/${serviceNote._id}`}
+                            >
                               <p>Print</p>
                             </Link>
                           </div>
-                          <PDFDownloadLink document={<PDFServiceNote title="pdf"/>} fileName="ServiceNote.pdf">
+                          <PDFDownloadLink
+                            document={<PDFServiceNote title="pdf" />}
+                            fileName="ServiceNote.pdf"
+                          >
                             {({ loading }) =>
                               loading ? "Loading document..." : "render"
                             }
@@ -221,17 +208,12 @@ function ServiceNotePage() {
                         </div>
                       </div>
                     )}
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
           </table>
         </section>
-        {/* <ServiceNoteDetails
-          isOpen={isModaleOpen}
-          onClose={handleCloseServiceNoteDetails}
-          serviceNoteId={selectedServiceNoteId}
-        /> */}
       </Sidebar>
     </>
   );

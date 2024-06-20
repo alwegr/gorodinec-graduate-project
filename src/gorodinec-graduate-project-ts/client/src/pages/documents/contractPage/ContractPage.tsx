@@ -6,6 +6,8 @@ import { sidebarItems } from "../../../components/sidebar/DataSidebar";
 import { Contract, Counterpartie } from "../DocumentInterface";
 import { IoIosArrowBack } from "react-icons/io";
 import TabDocumentsPage from "../../../components/tabDocumentsPage/TabDocumentsPage";
+import { HiEllipsisHorizontal } from "react-icons/hi2";
+import ContractUpdate from "../../../components/document/contract/ContractUpdate";
 
 const URL = process.env.REACT_APP_URL;
 
@@ -13,33 +15,62 @@ function ContractPage() {
   const [dataContract, setDataContract] = useState<Contract[]>([]);
   const [counterpartie, setCounterpartie] = useState<Contract[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filter, setFilter] = useState<string>("");
-
-  useEffect(() => {
-    fetchCounterpartie();
-  }, []);
-
-  const fetchCounterpartie = async () => {
-    try {
-      const response = await axios.get<Contract[]>(
-        `${URL}/get/contract`
-      );
-      setDataContract(response.data);
-    } catch (error) {
-      console.error("Ошибка:", error);
-    }
-  };
+  const [filtereContract, setFilteredContract] = useState<Contract[]>([]);
+  const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>("");
 
   useEffect(() => {
     axios
-      .get(`${URL}/get/counterparties`)
+      .get(`${URL}/get/contract`)
       .then((res) => {
-        setCounterpartie(res.data);
+        setDataContract(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    const filterDocument = () => {
+      let filteredData = dataContract;
 
+      // Поиск создателю
+      if (searchQuery !== "") {
+        filteredData = filteredData.filter((contract) => {
+          const fullName = `${contract.counterparties.nameCounterparties}`;
+          return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+      }
+      setFilteredContract(filteredData);
+    };
+
+    filterDocument();
+  }, [dataContract, searchQuery]);
+
+  const togglePopover = (id: string) => {
+    setOpenPopoverId(openPopoverId === id ? null : id);
+  };
+
+  // функция для закрытие togglePopover вне элемента
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (!event.target.closest(".HiEllipsisHorizontal"))
+        setOpenPopoverId(null);
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  // модальное окно редактировать сотрудника
+  const handleUpdateEmployee = (id: string) => {
+    setSelectedEmployeeId(id);
+    setIsModalUpdateOpen(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setIsModalUpdateOpen(false);
+  };
 
   return (
     <>
@@ -63,19 +94,6 @@ function ContractPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <div className={"container_filter"}>
-                <select
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  className={"filter"}
-                >
-                  <option value="">Все</option>
-                  <option value="Докладная">Докладная</option>
-                  <option value="Пояснительная">Пояснительная</option>
-                  <option value="Объяснительная">Объяснительная</option>
-                  <option value="Материальная">Маретиальная</option>
-                </select>
-              </div>
             </div>
             <div className={"btn_add_document"}>
               <Link to="/documents/createDocument/contract">
@@ -97,35 +115,20 @@ function ContractPage() {
               </tr>
             </thead>
             <tbody>
-              {dataContract.map((contract, index) => (
+              {filtereContract.map((contract, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{contract.nameContract}</td>
+                  <Link
+                    to={`/documents/createDocument/contract/pdf/${contract._id}`}
+                    className={"link_table"}
+                  >
+                    {" "}
+                    <td>{contract.nameContract}</td>
+                  </Link>
                   <td>
-                    <div className={"counterparties_container"}>
-                      {contract.counterparties.length > 0 ? (
-                        contract.counterparties
-                          .slice(0, 3)
-                          .map((counterparties: Counterpartie, index) => (
-                            <div key={index} className={"counterparties"}>
-                              <div className="counterparties_letter">
-                                "{counterparties.nameCounterparties
-                                  ? counterparties.nameCounterparties
-                                  : ""}"
-                              </div>
-                            </div>
-                          ))
-                      ) : (
-                        <span>Нет данных</span>
-                      )}
-                      {contract.counterparties.length > 3 && (
-                        <span>
-                          <div className="avatar">
-                            <span>+{contract.counterparties.length - 3}</span>
-                          </div>
-                        </span>
-                      )}
-                    </div>
+                    {contract.counterparties
+                      ? contract.counterparties.nameCounterparties
+                      : "нет данных"}
                   </td>
                   <td>{new Date(contract.dateStart).toLocaleDateString()}</td>
                   <td>{new Date(contract.dateEnd).toLocaleDateString()}</td>
@@ -135,11 +138,34 @@ function ContractPage() {
                     {contract.createContract.middleName.charAt(0)}.
                   </td>
                   <td>{contract.statusContract.title}</td>
+                  <td>
+                    <HiEllipsisHorizontal
+                      className="HiEllipsisHorizontal"
+                      onClick={() => togglePopover(contract._id)}
+                    />
+                    {openPopoverId === contract._id && (
+                      <div className="popup">
+                        <div className="popup_content">
+                          <div
+                            className="button_edit"
+                            onClick={() => handleUpdateEmployee(contract._id)}
+                          >
+                            <p>Изменить</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </section>
+        <ContractUpdate
+          isOpen={isModalUpdateOpen}
+          onClose={handleCloseUpdateModal}
+          contractId={selectedEmployeeId}
+        />
       </Sidebar>
     </>
   );

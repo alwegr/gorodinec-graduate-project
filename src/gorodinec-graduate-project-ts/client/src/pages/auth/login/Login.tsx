@@ -36,7 +36,7 @@ const Login: React.FC = () => {
         userName,
         password,
       });
-      navigate("/documents/serviceNote");
+      navigate("/documents");
     } catch (error) {
       if (error) {
         setUserNotFoundError(true);

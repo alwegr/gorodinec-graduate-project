@@ -16,11 +16,9 @@ function CreateEmploymentContract() {
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
-  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
   const [position, setPosition] = useState("");
   const [dataPosition, setDataPosition] = useState<any[]>([]);
-  const [divisions, setDivisions] = useState("");
-  const [dataDivisions, setDataDivisions] = useState<any[]>([]);
   const [seriesPassport, setSeriesPassport] = useState("");
   const [numberPassport, setNumberPassport] = useState("");
   const [issued, setIssued] = useState("");
@@ -38,15 +36,6 @@ function CreateEmploymentContract() {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${URL}/get/divisions`)
-      .then((res) => {
-        setDataDivisions(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   const handleSubmitEmploymentContract = async (event: any) => {
     event.preventDefault();
     axios
@@ -55,9 +44,8 @@ function CreateEmploymentContract() {
         lastName,
         firstName,
         middleName,
-        gender,
+        address,
         position,
-        divisions,
         seriesPassport,
         numberPassport,
         issued,
@@ -77,12 +65,6 @@ function CreateEmploymentContract() {
       setPosition(selectedOption.value);
     }
   };
-  const handlesetDivisionsChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setDivisions(selectedOption.value);
-    }
-  };
-
   return (
     <>
       <Sidebar items={sidebarItems}>
@@ -105,7 +87,6 @@ function CreateEmploymentContract() {
               >
                 <div className={"container_colum_item"}>
                   <h3>Личные данные</h3>
-                  
                   <div className={"personal_information"}>
                     <label htmlFor="lastName">Фамилия</label>
                     <div>
@@ -145,29 +126,17 @@ function CreateEmploymentContract() {
                       />
                     </div>
                   </div>
-                  <div className={"personal_information"}>
-                    <label htmlFor="gender">Пол</label>
-                    <div className={"gender_radio"}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="Женский"
-                          checked={gender == "Женский" ? true : false}
-                          onChange={(e: any) => setGender(e.target.value)}
-                        />
-                        Женский
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="Мужской"
-                          checked={gender == "Мужской" ? true : false}
-                          onChange={(e: any) => setGender(e.target.value)}
-                        />
-                        Мужской
-                      </label>
+                  <div>
+                    <label htmlFor="address">Адрес</label>
+                    <div>
+                      <input
+                        type="text"
+                        id="address"
+                        placeholder="Адрес"
+                        onChange={(e: any) => setAddress(e.target.value)}
+                        value={address}
+                        required
+                      />
                     </div>
                   </div>
                   <div className={"input_div"}>
@@ -187,39 +156,43 @@ function CreateEmploymentContract() {
                       />
                     </div>
                   </div>
-                  <div className={"input_div"}>
-                    <label htmlFor="divisions">Подразделение</label>
-                    <div className="select_divisions">
-                      <Select
-                        options={dataDivisions.map((divisions) => ({
-                          value: divisions._id,
-                          label: divisions.title,
-                        }))}
-                        onChange={handlesetDivisionsChange}
-                        styles={style}
-                        isClearable
-                        isSearchable
-                        required
-                        placeholder={"Выберите подразделение"}
-                      />
-                    </div>
-                  </div>
+                  <div className="probel"></div>
                 </div>
 
                 <div className={"container_colum_item"}>
                   <h3>Персональные данные</h3>
-                  <div className={"personal_information"}>
-                    <label htmlFor="">Серия и номер</label>
-                    <div>
-                      <input
-                        type="text"
-                        maxLength={4}
-                        id=""
-                        placeholder="Серия и номер паспорта"
-                        onChange={(e: any) => setSeriesPassport(e.target.value)}
-                        value={seriesPassport}
-                        required
-                      />
+                  <div className="seria_number_passport">
+                    <div className={"personal_information"}>
+                      <label htmlFor="">Серия </label>
+                      <div>
+                        <input
+                          type="text"
+                          maxLength={5}
+                          id=""
+                          placeholder="Серия  паспорта"
+                          onChange={(e: any) =>
+                            setSeriesPassport(e.target.value)
+                          }
+                          value={seriesPassport}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className={"personal_information"}>
+                      <label htmlFor="">Номер</label>
+                      <div>
+                        <input
+                          type="text"
+                          maxLength={6}
+                          id=""
+                          placeholder="Номер паспорта"
+                          onChange={(e: any) =>
+                            setNumberPassport(e.target.value)
+                          }
+                          value={numberPassport}
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className={"personal_information"}>
@@ -239,7 +212,7 @@ function CreateEmploymentContract() {
                     <label htmlFor="">Дата выдачи</label>
                     <div>
                       <input
-                        type="text"
+                        type="date"
                         id=""
                         placeholder="Дата выдачи паспорта"
                         onChange={(e: any) => setDateOfIssue(e.target.value)}
@@ -254,6 +227,7 @@ function CreateEmploymentContract() {
                       <input
                         type="text"
                         id=""
+                        maxLength={7}
                         placeholder="Код подразделения"
                         onChange={(e: any) => setDepartmentCode(e.target.value)}
                         value={departmentCode}
@@ -275,7 +249,7 @@ function CreateEmploymentContract() {
                     </div>
                   </div>
                   <div className={"form_buttons"}>
-                    <Link to={"/documents/serviceNote"}>
+                    <Link to={"/documents"}>
                       <button className={"form_btn cancel"}>Отменить</button>
                     </Link>
                     <button className={"form_btn add"}>Добавить</button>

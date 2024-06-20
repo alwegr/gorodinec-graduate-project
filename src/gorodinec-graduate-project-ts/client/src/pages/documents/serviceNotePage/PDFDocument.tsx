@@ -8,10 +8,7 @@ const URL = process.env.REACT_APP_URL;
 
 function PDFDocument({ serviceNoteId }: any) {
   const { id } = useParams<{ id: string }>();
-  const [dataServiceNote, setDataServiceNote] = useState<ServiceNote | null>(
-    null
-  );
-
+  const [dataServiceNote, setDataServiceNote] = useState<ServiceNote | null>(null);
   useEffect(() => {
     axios
       .get(`${URL}/get/serviceNote/${id}`)
@@ -30,6 +27,7 @@ function PDFDocument({ serviceNoteId }: any) {
   if (!dataServiceNote) {
     return <div>Загрузка...</div>;
   }
+
   return (
     <>
       <div className={"container_btn_print"}>
@@ -38,10 +36,11 @@ function PDFDocument({ serviceNoteId }: any) {
         </button>
       </div>
       <div style={{}}>
-        <div style={{ position: "relative", top:"0", left:"15%", width: "1240px", display: "flex", justifyContent: "center" }}>
+        <div
+          style={{ page: "A4", marginBottom: "20px", position: "relative", top: "0", left: "18%", width: "1240px", display: "flex", justifyContent: "center"}}>
           <div ref={component} style={{ position: "relative", margin: "35px" }}>
             <div>
-              <p style={{ textAlign: "end" }}>
+              <p style={{ textAlign: "end", marginBottom:"40px"}}>
                 Уважаемый(ая)
                 {`${dataServiceNote.addresser.lastName} ${dataServiceNote.addresser.firstName} ${dataServiceNote.addresser.middleName}`}
               </p>
@@ -49,7 +48,7 @@ function PDFDocument({ serviceNoteId }: any) {
                 {dataServiceNote.nameServiceNote}
               </h3>
               <p>{dataServiceNote.viewServiceNote.title}</p>
-              <p style={{ textAlign: "justify", textIndent: "20px" }}>
+              <p style={{ textAlign: "justify", textIndent: "20px", marginTop:"30px", marginBottom:"30px", lineHeight: "1.5"}}>
                 {dataServiceNote.content}
               </p>
               <p style={{ textAlign: "end" }}>

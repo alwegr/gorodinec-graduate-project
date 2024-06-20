@@ -8,12 +8,9 @@ export interface Contract{
   statusContract: StatusContract,
   subjectAgreement: string,
   createContract: EmployeeContract,
-  counterparties: Counterpartie[],
+  counterparties: Counterpartie,
 }
 
-export interface CounterpartiesFormData {
-  counterpartieId: string[];
-}
 
 
 export interface ServiceNote {
@@ -41,12 +38,8 @@ export interface EmploymentContract{
   lastName: string;
   firstName: string;
   middleName: string;
-  gender: string;
+  address: string;
   position: {
-    _id: string;
-    title: string;
-  };
-  divisions: {
     _id: string;
     title: string;
   };
